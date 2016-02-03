@@ -1,0 +1,10 @@
+*.iml
+.idea/
+*.o
+*.so
+*.rlib
+*.dll
+*.a
+*.exe
+/target/
+twitch_auth.json

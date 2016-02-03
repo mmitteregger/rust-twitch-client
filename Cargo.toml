@@ -1,0 +1,13 @@
+[package]
+name = "twitch"
+version = "0.1.0"
+description = "Twitch API"
+license = "MIT"
+authors = ["Michael Mitteregger <michael.mitteregger@gmx.at>"]
+keywords = ["twitch"]
+
+[dependencies]
+hyper = "0.7.2"
+serde = "*"
+serde_json = "*"
+serde_macros = "*"

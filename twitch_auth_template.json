@@ -1,0 +1,4 @@
+{
+  "name": "Rust Twitch Client Tests",
+  "client_id": "<PUT YOUR CLIENT ID HERE>"
+}
