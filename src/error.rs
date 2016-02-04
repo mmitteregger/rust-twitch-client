@@ -6,6 +6,7 @@ use hyper::client::response::Response;
 use hyper::error::Error as HyperError;
 use serde_json::error::Error as JsonError;
 
+
 pub type Result<T> = ::std::result::Result<T, Error>;
 
 use self::Error::{
@@ -13,7 +14,7 @@ use self::Error::{
     Unauthorized,
     Io,
     Hyper,
-Deserialization,
+    Deserialization,
 };
 
 

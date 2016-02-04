@@ -21,7 +21,6 @@ impl TwitchClient {
 
 pub struct TwitchClientBuilder {
     client_id: Option<String>,
-//    access_token: Option<String>,
     hyper_client: Option<hyper::Client>,
 }
 
@@ -29,7 +28,6 @@ impl TwitchClientBuilder {
     pub fn new() -> TwitchClientBuilder {
         TwitchClientBuilder {
             client_id: None,
-//            access_token: None,
             hyper_client: None,
         }
     }
@@ -38,11 +36,6 @@ impl TwitchClientBuilder {
         self.client_id = Some(client_id);
         self
     }
-
-//    pub fn access_token(mut self, access_token: &'a str) -> TwitchClientBuilder {
-//        self.access_token = Some(access_token);
-//        self
-//    }
 
     pub fn hyper_client(mut self, hyper_client: hyper::Client) -> TwitchClientBuilder {
         self.hyper_client = Some(hyper_client);
@@ -65,13 +58,6 @@ impl TwitchClientBuilder {
 
 
 impl TwitchClient {
-//    pub fn get_blocks(&self, user: &str, paging: Paging) -> Result<()> {
-//        let url = format!("/users/{user}/blocks", user=user);
-//        let response = try!(self.http_client.get_paged_content(&url, paging));
-//        println!("response: {}", response);
-//        Ok(())
-//    }
-
     pub fn get_top_games(&self, paging: &Paging) -> Result<model::games::TopGames> {
         let response = try!(self.http_client.get_paged_content("/games/top", paging));
         let top_games: model::games::TopGames = try!(serde_json::from_str(&response));
@@ -92,17 +78,6 @@ mod tests {
     use std::fs::File;
     use std::io::Read;
     use serde_json;
-
-//    #[test]
-//    #[ignore]
-//    fn test_get_blocks() {
-//        let client = TwitchClientBuilder::new()
-//            .client_id(auth.client_id)
-//            .redirect_uri(auth.redirect_uri)
-//            .client_secret(auth.client_secret);
-//        let blocks = client.get_blocks("ZakulTv", Paging::default()).unwrap();
-//    }
-//
 
     #[test]
     fn test_get_top_games() {

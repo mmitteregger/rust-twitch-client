@@ -79,7 +79,6 @@ impl TwitchLinks for TopGames {
 
 impl Paged for TopGames {}
 
-//impl_paged!(TopGames);
 impl TopGames {
     pub fn total(&self) -> u32 {
         self.total
