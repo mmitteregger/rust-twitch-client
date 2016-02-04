@@ -69,6 +69,12 @@ impl TwitchClient {
         let ingests: model::ingests::Ingests = try!(serde_json::from_str(&response));
         Ok(ingests.ingests())
     }
+
+    pub fn get_basic_info(&self) -> Result<model::root::BasicInfo> {
+        let response = try!(self.http_client.get_content("/"));
+        let basic_info: model::root::BasicInfo = try!(serde_json::from_str(&response));
+        Ok(basic_info)
+    }
 }
 
 #[cfg(test)]
@@ -96,6 +102,16 @@ mod tests {
         let client = create_test_twitch_client();
         let ingests = client.get_ingests().unwrap();
         assert!(ingests.len() > 0, "ingests.len() = {} > 0", ingests.len());
+    }
+
+    #[test]
+    fn test_get_basic_info() {
+        let client = create_test_twitch_client();
+        let basic_info = client.get_basic_info().unwrap();
+        let token = basic_info.token();
+        assert!(!token.valid(), "expecting invalid token for unauthenticated access");
+        assert!(token.user_name().is_none(), "expecting no user name for unauthenticated access");
+        assert!(token.authorization().is_none(), "expecting no auth info for unauthenticated access");
     }
 
 

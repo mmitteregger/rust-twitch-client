@@ -4,6 +4,7 @@ pub mod paging;
 pub mod image;
 pub mod games;
 pub mod ingests;
+pub mod root;
 
 pub trait TwitchLinks {
     fn links(&self) -> &BTreeMap<String, String>;
