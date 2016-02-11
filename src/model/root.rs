@@ -32,6 +32,33 @@ impl TwitchLinks for BasicInfo {
 }
 
 impl BasicInfo {
+    pub fn link_user(&self) -> &String {
+        self.get_expected_link("user")
+    }
+    pub fn link_channel(&self) -> &String {
+        self.get_expected_link("channel")
+    }
+    pub fn link_search(&self) -> &String {
+        self.get_expected_link("search")
+    }
+    pub fn link_streams(&self) -> &String {
+        self.get_expected_link("streams")
+    }
+    pub fn link_ingests(&self) -> &String {
+        self.get_expected_link("ingests")
+    }
+    pub fn link_teams(&self) -> &String {
+        self.get_expected_link("teams")
+    }
+    pub fn link_users(&self) -> Option<&String> {
+        self.links.get("users")
+    }
+    pub fn link_channels(&self) -> Option<&String> {
+        self.links.get("channels")
+    }
+    pub fn link_chat(&self) -> Option<&String> {
+        self.links.get("chat")
+    }
     pub fn token(&self) -> &Token {
         &self.token
     }

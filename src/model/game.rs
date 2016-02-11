@@ -1,7 +1,6 @@
 use std::collections::BTreeMap;
 
 pub use model::TwitchLinks;
-pub use model::paging::Paged;
 pub use model::image::ImageLinks;
 
 #[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
@@ -77,9 +76,13 @@ impl TwitchLinks for TopGames {
     }
 }
 
-impl Paged for TopGames {}
-
 impl TopGames {
+    pub fn link_self(&self) -> &String {
+        self.get_expected_link("self")
+    }
+    pub fn link_next(&self) -> &String {
+        self.get_expected_link("next")
+    }
     pub fn total(&self) -> u32 {
         self.total
     }

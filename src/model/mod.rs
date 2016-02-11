@@ -1,9 +1,8 @@
 use std::collections::BTreeMap;
 
-pub mod paging;
 pub mod image;
-pub mod games;
-pub mod ingests;
+pub mod game;
+pub mod ingest;
 pub mod root;
 
 pub trait TwitchLinks {

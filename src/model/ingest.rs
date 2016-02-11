@@ -28,8 +28,11 @@ impl TwitchLinks for Ingests {
 }
 
 impl Ingests {
-    pub fn ingests(self) -> Vec<Ingest> {
-        self.ingests
+    pub fn link_self(&self) -> &String {
+        self.get_expected_link("self")
+    }
+    pub fn ingests(&self) -> &Vec<Ingest> {
+        &self.ingests
     }
 }
 

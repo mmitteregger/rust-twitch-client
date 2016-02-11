@@ -1,11 +1,12 @@
 use hyper;
 use serde_json;
 
-pub use model::paging::Paging;
+pub use self::param::*;
 use self::http::TwitchHttpClient;
 use error::Result;
 use model;
 
+mod param;
 mod http;
 
 
@@ -58,16 +59,16 @@ impl TwitchClientBuilder {
 
 
 impl TwitchClient {
-    pub fn get_top_games(&self, paging: &Paging) -> Result<model::games::TopGames> {
-        let response = try!(self.http_client.get_paged_content("/games/top", paging));
-        let top_games: model::games::TopGames = try!(serde_json::from_str(&response));
+    pub fn get_top_games(&self, params: &TopGamesParams) -> Result<model::game::TopGames> {
+        let response = try!(self.http_client.get_content_with_params("/games/top", params));
+        let top_games: model::game::TopGames = try!(serde_json::from_str(&response));
         Ok(top_games)
     }
 
-    pub fn get_ingests(&self) -> Result<Vec<model::ingests::Ingest>> {
+    pub fn get_ingests(&self) -> Result<model::ingest::Ingests> {
         let response = try!(self.http_client.get_content("/ingests"));
-        let ingests: model::ingests::Ingests = try!(serde_json::from_str(&response));
-        Ok(ingests.ingests())
+        let ingests: model::ingest::Ingests = try!(serde_json::from_str(&response));
+        Ok(ingests)
     }
 
     pub fn get_basic_info(&self) -> Result<model::root::BasicInfo> {
@@ -80,19 +81,30 @@ impl TwitchClient {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use model::paging::Paged;
     use std::fs::File;
     use std::io::Read;
     use serde_json;
 
     #[test]
-    fn test_get_top_games() {
+    fn test_get_top_games_default_params() {
         let client = create_test_twitch_client();
-        let paging = Paging::new(0, 2);
-        let top_games = client.get_top_games(&paging).unwrap();
-        assert_eq!(top_games.current_page_link(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=0");
-        assert_eq!(top_games.next_page_link(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=2");
-        assert_eq!(top_games.paging(), paging);
+        let top_games = client.get_top_games(&TopGamesParams::default()).unwrap();
+        assert_eq!(top_games.link_self(), "https://api.twitch.tv/kraken/games/top?limit=10&offset=0");
+        assert_eq!(top_games.link_next(), "https://api.twitch.tv/kraken/games/top?limit=10&offset=10");
+        assert!(top_games.total() > 0, "top_games.total() = {} > 0", top_games.total());
+        assert_eq!(top_games.top().len(), 10);
+    }
+
+    #[test]
+    fn test_get_top_games_custom_params() {
+        let client = create_test_twitch_client();
+        let params = TopGamesParamsBuilder::default()
+                .offset(0)
+                .limit(2)
+                .build();
+        let top_games = client.get_top_games(&params).unwrap();
+        assert_eq!(top_games.link_self(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=0");
+        assert_eq!(top_games.link_next(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=2");
         assert!(top_games.total() > 0, "top_games.total() = {} > 0", top_games.total());
         assert_eq!(top_games.top().len(), 2);
     }
@@ -101,13 +113,23 @@ mod tests {
     fn test_get_ingests() {
         let client = create_test_twitch_client();
         let ingests = client.get_ingests().unwrap();
-        assert!(ingests.len() > 0, "ingests.len() = {} > 0", ingests.len());
+        assert_eq!(ingests.link_self(), "https://api.twitch.tv/kraken/ingests");
+        assert!(ingests.ingests().len() > 0, "ingests.ingests().len() = {} > 0", ingests.ingests().len());
     }
 
     #[test]
     fn test_get_basic_info() {
         let client = create_test_twitch_client();
         let basic_info = client.get_basic_info().unwrap();
+        assert_eq!(basic_info.link_user(), "https://api.twitch.tv/kraken/user");
+        assert_eq!(basic_info.link_channel(), "https://api.twitch.tv/kraken/channel");
+        assert_eq!(basic_info.link_search(), "https://api.twitch.tv/kraken/search");
+        assert_eq!(basic_info.link_streams(), "https://api.twitch.tv/kraken/streams");
+        assert_eq!(basic_info.link_ingests(), "https://api.twitch.tv/kraken/ingests");
+        assert_eq!(basic_info.link_teams(), "https://api.twitch.tv/kraken/teams");
+        assert!(basic_info.link_users().is_none(), "expecting no link for unauthenticated access");
+        assert!(basic_info.link_channels().is_none(), "expecting no link for unauthenticated access");
+        assert!(basic_info.link_chat().is_none(), "expecting no link for unauthenticated access");
         let token = basic_info.token();
         assert!(!token.valid(), "expecting invalid token for unauthenticated access");
         assert!(token.user_name().is_none(), "expecting no user name for unauthenticated access");

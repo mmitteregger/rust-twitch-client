@@ -5,7 +5,7 @@ use hyper::header::{Headers, Accept, qitem};
 use hyper::mime::{Mime, TopLevel, SubLevel};
 use hyper::status::{StatusCode, StatusClass};
 
-use model::paging::Paging;
+use ::client::param::ToQueryString;
 use error::{Result, Error};
 
 
@@ -33,9 +33,9 @@ impl TwitchHttpClient {
         self.get_content_from_url(url)
     }
 
-    pub fn get_paged_content(&self, relative_url: &str, paging: &Paging) -> Result<String> {
+    pub fn get_content_with_params<Q: ToQueryString>(&self, relative_url: &str, params: &Q) -> Result<String> {
         let mut url_string = self.create_url_string(&relative_url);
-        self.add_paging(&mut url_string, paging);
+        url_string.push_str(&params.to_query_string());
         let url = Url::parse(&url_string).unwrap();
         self.get_content_from_url(url)
     }
@@ -44,15 +44,6 @@ impl TwitchHttpClient {
         let mut url_string = String::from(BASE_URL);
         url_string.push_str(relative_url);
         url_string
-    }
-
-    pub fn add_paging(&self, url_string: &mut String, paging: &Paging) {
-        if !paging.is_default() {
-            url_string.push_str("?limit=");
-            url_string.push_str(&paging.limit().unwrap().to_string());
-            url_string.push_str("?offset=");
-            url_string.push_str(&paging.offset().unwrap().to_string());
-        }
     }
 
     fn get_content_from_url(&self, url: Url) -> Result<String> {
