@@ -59,19 +59,19 @@ impl TwitchClientBuilder {
 
 
 impl TwitchClient {
-    pub fn get_top_games(&self, params: &TopGamesParams) -> Result<model::game::TopGames> {
+    pub fn top_games(&self, params: &TopGamesParams) -> Result<model::game::TopGames> {
         let response = try!(self.http_client.get_content_with_params("/games/top", params));
         let top_games: model::game::TopGames = try!(serde_json::from_str(&response));
         Ok(top_games)
     }
 
-    pub fn get_ingests(&self) -> Result<model::ingest::Ingests> {
+    pub fn ingests(&self) -> Result<model::ingest::Ingests> {
         let response = try!(self.http_client.get_content("/ingests"));
         let ingests: model::ingest::Ingests = try!(serde_json::from_str(&response));
         Ok(ingests)
     }
 
-    pub fn get_basic_info(&self) -> Result<model::root::BasicInfo> {
+    pub fn basic_info(&self) -> Result<model::root::BasicInfo> {
         let response = try!(self.http_client.get_content("/"));
         let basic_info: model::root::BasicInfo = try!(serde_json::from_str(&response));
         Ok(basic_info)
@@ -86,9 +86,9 @@ mod tests {
     use serde_json;
 
     #[test]
-    fn test_get_top_games_default_params() {
+    fn test_top_games_with_default_params() {
         let client = create_test_twitch_client();
-        let top_games = client.get_top_games(&TopGamesParams::default()).unwrap();
+        let top_games = client.top_games(&TopGamesParams::default()).unwrap();
         assert_eq!(top_games.link_self(), "https://api.twitch.tv/kraken/games/top?limit=10&offset=0");
         assert_eq!(top_games.link_next(), "https://api.twitch.tv/kraken/games/top?limit=10&offset=10");
         assert!(top_games.total() > 0, "top_games.total() = {} > 0", top_games.total());
@@ -96,13 +96,13 @@ mod tests {
     }
 
     #[test]
-    fn test_get_top_games_custom_params() {
+    fn test_top_games_with_custom_params() {
         let client = create_test_twitch_client();
         let params = TopGamesParamsBuilder::default()
                 .offset(0)
                 .limit(2)
                 .build();
-        let top_games = client.get_top_games(&params).unwrap();
+        let top_games = client.top_games(&params).unwrap();
         assert_eq!(top_games.link_self(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=0");
         assert_eq!(top_games.link_next(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=2");
         assert!(top_games.total() > 0, "top_games.total() = {} > 0", top_games.total());
@@ -110,17 +110,17 @@ mod tests {
     }
 
     #[test]
-    fn test_get_ingests() {
+    fn test_ingests() {
         let client = create_test_twitch_client();
-        let ingests = client.get_ingests().unwrap();
+        let ingests = client.ingests().unwrap();
         assert_eq!(ingests.link_self(), "https://api.twitch.tv/kraken/ingests");
         assert!(ingests.ingests().len() > 0, "ingests.ingests().len() = {} > 0", ingests.ingests().len());
     }
 
     #[test]
-    fn test_get_basic_info() {
+    fn test_basic_info() {
         let client = create_test_twitch_client();
-        let basic_info = client.get_basic_info().unwrap();
+        let basic_info = client.basic_info().unwrap();
         assert_eq!(basic_info.link_user(), "https://api.twitch.tv/kraken/user");
         assert_eq!(basic_info.link_channel(), "https://api.twitch.tv/kraken/channel");
         assert_eq!(basic_info.link_search(), "https://api.twitch.tv/kraken/search");
