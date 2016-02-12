@@ -3,6 +3,16 @@ use std::collections::BTreeMap;
 pub use model::TwitchLinks;
 pub use model::image::ImageLinks;
 
+
+#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
+pub struct TopGamesResponse {
+    #[serde(rename="_links")]
+    links: BTreeMap<String, String>,
+    #[serde(rename="_total")]
+    total: u32,
+    top: Vec<GameInfo>,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
 pub struct GameInfo {
     viewers: u32,
@@ -24,15 +34,27 @@ pub struct Game {
     logo_image_links: ImageLinks,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
-pub struct TopGamesResponse {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
-    #[serde(rename="_total")]
-    total: u32,
-    top: Vec<GameInfo>,
+
+impl TwitchLinks for TopGamesResponse {
+    fn links(&self) -> &BTreeMap<String, String> {
+        &self.links
+    }
 }
 
+impl TopGamesResponse {
+    pub fn link_self(&self) -> &String {
+        self.get_expected_link("self")
+    }
+    pub fn link_next(&self) -> &String {
+        self.get_expected_link("next")
+    }
+    pub fn total(&self) -> u32 {
+        self.total
+    }
+    pub fn top(&self) -> &Vec<GameInfo> {
+        &self.top
+    }
+}
 
 impl GameInfo {
     pub fn viewers(&self) -> u32 {
@@ -67,26 +89,5 @@ impl Game {
     }
     pub fn logo_image_links(&self) -> &ImageLinks {
         &self.logo_image_links
-    }
-}
-
-impl TwitchLinks for TopGamesResponse {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
-impl TopGamesResponse {
-    pub fn link_self(&self) -> &String {
-        self.get_expected_link("self")
-    }
-    pub fn link_next(&self) -> &String {
-        self.get_expected_link("next")
-    }
-    pub fn total(&self) -> u32 {
-        self.total
-    }
-    pub fn top(&self) -> &Vec<GameInfo> {
-        &self.top
     }
 }
