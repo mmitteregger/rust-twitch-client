@@ -25,7 +25,7 @@ pub struct Game {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
-pub struct TopGames {
+pub struct TopGamesResponse {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     #[serde(rename="_total")]
@@ -70,13 +70,13 @@ impl Game {
     }
 }
 
-impl TwitchLinks for TopGames {
+impl TwitchLinks for TopGamesResponse {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
     }
 }
 
-impl TopGames {
+impl TopGamesResponse {
     pub fn link_self(&self) -> &String {
         self.get_expected_link("self")
     }

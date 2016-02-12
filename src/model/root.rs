@@ -1,10 +1,11 @@
 use std::collections::BTreeMap;
 
 pub use model::TwitchLinks;
+pub use model::DateString;
 
 
 #[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
-pub struct BasicInfo {
+pub struct BasicInfoResponse {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     token: Token,
@@ -20,18 +21,18 @@ pub struct Token {
 #[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
 pub struct Authorization {
     scopes: Vec<String>,
-    created_at: String,
-    updated_at: String,
+    created_at: DateString,
+    updated_at: DateString,
 }
 
 
-impl TwitchLinks for BasicInfo {
+impl TwitchLinks for BasicInfoResponse {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
     }
 }
 
-impl BasicInfo {
+impl BasicInfoResponse {
     pub fn link_user(&self) -> &String {
         self.get_expected_link("user")
     }
@@ -80,10 +81,10 @@ impl Authorization {
     pub fn scopes(&self) -> &Vec<String> {
         &self.scopes
     }
-    pub fn created_at(&self) -> &String {
+    pub fn created_at(&self) -> &DateString {
         &self.created_at
     }
-    pub fn updated_at(&self) -> &String {
+    pub fn updated_at(&self) -> &DateString {
         &self.updated_at
     }
 }
