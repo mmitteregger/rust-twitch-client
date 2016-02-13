@@ -155,27 +155,26 @@ mod tests {
 
     fn create_test_twitch_client() -> TwitchClient {
         let auth = read_auth();
-        let twitch_client = TwitchClientBuilder::new()
-            .client_id(auth.client_id)
-            .build();
+        let mut twitch_client_builder = TwitchClientBuilder::new();
+
+        match auth {
+            Some(auth) => twitch_client_builder = twitch_client_builder.client_id(auth.client_id),
+            None => {},
+        }
+
+        let twitch_client = twitch_client_builder.build();
         twitch_client
     }
 
-    fn read_auth() -> Auth {
+    fn read_auth() -> Option<Auth> {
         let mut auth_file = match File::open("twitch_auth.json") {
             Ok(file) => file,
-            Err(err) => panic!("
-            Tests create a new TwitchClient with info specified in 'twitch_auth.json'.
-            As this info should be kept private it is not committed to the vcs.
-            You need to create the file in order to run these tests.
-            An template named 'twitch_auth_template.json' is provided at the project root.
-            Original error: {}
-            ", err),
+            Err(_) => return None,
         };
         let mut auth_string = String::new();
         auth_file.read_to_string(&mut auth_string).unwrap();
         let auth: Auth = serde_json::from_str(&auth_string).unwrap();
-        auth
+        Some(auth)
     }
 
     #[derive(Deserialize, Debug)]
