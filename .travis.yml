@@ -1,0 +1,9 @@
+language: rust
+rust:
+  - nightly
+before_script:
+  - rustc --verbose --version
+  - cargo --version
+branches:
+  only:
+    - master
