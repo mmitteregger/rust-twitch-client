@@ -33,8 +33,8 @@ impl TwitchClientBuilder {
         }
     }
 
-    pub fn client_id(mut self, client_id: String) -> TwitchClientBuilder {
-        self.client_id = Some(client_id);
+    pub fn client_id(mut self, client_id: &str) -> TwitchClientBuilder {
+        self.client_id = Some(client_id.to_string());
         self
     }
 
@@ -158,7 +158,7 @@ mod tests {
         let mut twitch_client_builder = TwitchClientBuilder::new();
 
         match auth {
-            Some(auth) => twitch_client_builder = twitch_client_builder.client_id(auth.client_id),
+            Some(auth) => twitch_client_builder = twitch_client_builder.client_id(&auth.client_id),
             None => {},
         }
 
