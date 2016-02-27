@@ -1,8 +1,8 @@
 [package]
-name = "twitch"
+name = "twitch-client"
 version = "0.1.0"
-description = "Twitch API"
-license = "MIT"
+description = "Twitch REST API client"
+license = "MIT/Apache-2.0"
 authors = ["Michael Mitteregger <michael.mitteregger@gmx.at>"]
 keywords = ["twitch"]
 
