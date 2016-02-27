@@ -1,6 +1,4 @@
-pub trait ToQueryString {
-    fn to_query_string(&self) -> String;
-}
+use http::ToQueryString;
 
 #[derive(Default, Debug, Clone, Hash, Eq, PartialEq)]
 pub struct TopGamesParams {

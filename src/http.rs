@@ -5,7 +5,6 @@ use hyper::header::{Headers, Accept, qitem};
 use hyper::mime::{Mime, TopLevel, SubLevel};
 use hyper::status::{StatusCode, StatusClass};
 
-use ::client::param::ToQueryString;
 use error::{Result, Error};
 
 
@@ -13,6 +12,10 @@ header! { (ClientId, "Client-ID") => [String] }
 
 const BASE_URL: &'static str = "https://api.twitch.tv/kraken";
 
+
+pub trait ToQueryString {
+    fn to_query_string(&self) -> String;
+}
 
 pub struct TwitchHttpClient {
     client_id: Option<String>,
