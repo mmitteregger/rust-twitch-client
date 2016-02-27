@@ -6,7 +6,7 @@ use self::http::TwitchHttpClient;
 use error::Result;
 use model;
 
-mod param;
+pub mod param;
 mod http;
 
 
