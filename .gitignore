@@ -1,10 +1,5 @@
 *.iml
-.idea/
-*.o
-*.so
-*.rlib
-*.dll
-*.a
-*.exe
+/.idea/
+/Cargo.lock
 /target/
 twitch_auth.json
