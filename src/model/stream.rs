@@ -7,6 +7,15 @@ pub use model::channel::Channel;
 
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct StreamsResponse {
+    #[serde(rename="_links")]
+    links: BTreeMap<String, String>,
+    #[serde(rename="_total")]
+    total: u32,
+    streams: Vec<Stream>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct StreamResponse {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
@@ -21,8 +30,8 @@ pub struct Stream {
     id: u64,
     game: String,
     viewers: u32,
-    average_fps: f32,
-    delay: u32,
+    average_fps: f64,
+    delay: Option<u32>,
     video_height: u16,
     is_playlist: bool,
     created_at: DateString,
@@ -30,6 +39,36 @@ pub struct Stream {
     preview: ImageLinks,
 }
 
+
+impl TwitchLinks for StreamsResponse {
+    fn links(&self) -> &BTreeMap<String, String> {
+        &self.links
+    }
+}
+
+impl StreamsResponse {
+    pub fn link_self(&self) -> &String {
+        self.get_expected_link("self")
+    }
+    pub fn link_next(&self) -> &String {
+        self.get_expected_link("next")
+    }
+    pub fn link_featured(&self) -> &String {
+        self.get_expected_link("featured")
+    }
+    pub fn link_summary(&self) -> &String {
+        self.get_expected_link("summary")
+    }
+    pub fn link_followed(&self) -> &String {
+        self.get_expected_link("followed")
+    }
+    pub fn total(&self) -> u32 {
+        self.total
+    }
+    pub fn streams(&self) -> &Vec<Stream> {
+        &self.streams
+    }
+}
 
 impl TwitchLinks for StreamResponse {
     fn links(&self) -> &BTreeMap<String, String> {
@@ -68,10 +107,10 @@ impl Stream {
     pub fn viewers(&self) -> u32 {
         self.viewers
     }
-    pub fn average_fps(&self) -> f32 {
+    pub fn average_fps(&self) -> f64 {
         self.average_fps
     }
-    pub fn delay(&self) -> u32 {
+    pub fn delay(&self) -> Option<u32> {
         self.delay
     }
     pub fn video_height(&self) ->u16 {

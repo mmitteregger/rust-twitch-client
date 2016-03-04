@@ -31,7 +31,7 @@ use twitch_client::*;
 
 fn main() {
     let twitch_client = TwitchClient::new();
-    let top_games = twitch_client.top_games(&TopGamesParams::default()).unwrap();
+    let top_games = twitch_client.top_games(TopGamesParams::default()).unwrap();
 
     println!("Total games: {}", top_games.total());
     println!("---");
@@ -57,7 +57,7 @@ fn main() {
             .offset(0)
             .limit(2)
             .build();
-    let top_games = twitch_client.top_games(&params).unwrap();
+    let top_games = twitch_client.top_games(params).unwrap();
     assert_eq!(top_games.top().len(), 2);
 
     println!("Total games: {}", top_games.total());

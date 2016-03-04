@@ -7,7 +7,11 @@ authors = ["Michael Mitteregger <michael.mitteregger@gmx.at>"]
 keywords = ["twitch"]
 
 [dependencies]
+# Http client for Twitch REST API
 hyper = "0.7"
+# Escaping of query parameters
+url = "0.5"
+# JSON serialization and deserialization
 serde = "0.7"
 serde_json = "0.7"
 serde_macros = "0.7"

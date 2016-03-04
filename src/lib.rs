@@ -18,7 +18,7 @@
 //!
 //! fn main() {
 //!     let twitch_client = TwitchClient::new();
-//!     let top_games = twitch_client.top_games(&TopGamesParams::default()).unwrap();
+//!     let top_games = twitch_client.top_games(TopGamesParams::default()).unwrap();
 //!
 //!     println!("Total games: {}", top_games.total());
 //!     println!("---");
@@ -42,7 +42,7 @@
 //!             .offset(0)
 //!             .limit(2)
 //!             .build();
-//!     let top_games = twitch_client.top_games(&params).unwrap();
+//!     let top_games = twitch_client.top_games(params).unwrap();
 //!     assert_eq!(top_games.top().len(), 2);
 //!
 //!     println!("Total games: {}", top_games.total());
@@ -55,6 +55,7 @@
 //! ```
 
 #[macro_use] extern crate hyper;
+extern crate url;
 extern crate serde;
 extern crate serde_json;
 
@@ -92,7 +93,7 @@ impl TwitchClientBuilder {
     }
 
     pub fn client_id(mut self, client_id: &str) -> TwitchClientBuilder {
-        self.client_id = Some(client_id.to_string());
+        self.client_id = Some(client_id.to_owned());
         self
     }
 
@@ -117,7 +118,7 @@ impl TwitchClientBuilder {
 
 
 impl TwitchClient {
-    pub fn top_games(&self, params: &TopGamesParams) -> Result<model::game::TopGamesResponse> {
+    pub fn top_games(&self, params: TopGamesParams) -> Result<model::game::TopGamesResponse> {
         let response = try!(self.http_client.get_content_with_params("/games/top", params));
         let top_games_res: model::game::TopGamesResponse = try!(serde_json::from_str(&response));
         Ok(top_games_res)
@@ -141,6 +142,12 @@ impl TwitchClient {
         let stream_res: model::stream::StreamResponse = try!(serde_json::from_str(&response));
         Ok(stream_res)
     }
+
+    pub fn streams(&self, params: StreamsParams) -> Result<model::stream::StreamsResponse> {
+        let response = try!(self.http_client.get_content_with_params("/streams", params));
+        let streams_res: model::stream::StreamsResponse = try!(serde_json::from_str(&response));
+        Ok(streams_res)
+    }
 }
 
 
@@ -155,7 +162,7 @@ mod tests {
     #[test]
     fn test_top_games_with_default_params() {
         let client = create_test_twitch_client();
-        let top_games_res = client.top_games(&TopGamesParams::default()).unwrap();
+        let top_games_res = client.top_games(TopGamesParams::default()).unwrap();
         assert_eq!(top_games_res.link_self(), "https://api.twitch.tv/kraken/games/top?limit=10&offset=0");
         assert_eq!(top_games_res.link_next(), "https://api.twitch.tv/kraken/games/top?limit=10&offset=10");
         assert!(top_games_res.total() > 0, "top_games_res.total() = {} > 0", top_games_res.total());
@@ -169,7 +176,7 @@ mod tests {
                 .offset(0)
                 .limit(2)
                 .build();
-        let top_games_res = client.top_games(&params).unwrap();
+        let top_games_res = client.top_games(params).unwrap();
         assert_eq!(top_games_res.link_self(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=0");
         assert_eq!(top_games_res.link_next(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=2");
         assert!(top_games_res.total() > 0, "top_games_res.total() = {} > 0", top_games_res.total());
@@ -210,6 +217,18 @@ mod tests {
         assert_eq!(stream_res.link_self(), "https://api.twitch.tv/kraken/streams/test_channel");
         assert_eq!(stream_res.link_channel(), "https://api.twitch.tv/kraken/channels/test_channel");
         assert!(stream_res.stream().is_none(), "expecting test channel stream to be offline");
+    }
+
+    #[test]
+    fn test_streams_with_default_params() {
+        let client = create_test_twitch_client();
+        let streams_res = client.streams(StreamsParams::default()).unwrap();
+        assert_eq!(streams_res.link_self(), "https://api.twitch.tv/kraken/streams?limit=25&offset=0");
+        assert_eq!(streams_res.link_next(), "https://api.twitch.tv/kraken/streams?limit=25&offset=25");
+        assert_eq!(streams_res.link_featured(), "https://api.twitch.tv/kraken/streams/featured");
+        assert_eq!(streams_res.link_summary(), "https://api.twitch.tv/kraken/streams/summary");
+        assert_eq!(streams_res.link_followed(), "https://api.twitch.tv/kraken/streams/followed");
+        assert!(streams_res.total() > 0, "streams_res.total() = {} > 0", streams_res.total());
     }
 
 

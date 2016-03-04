@@ -13,8 +13,8 @@ header! { (ClientId, "Client-ID") => [String] }
 const BASE_URL: &'static str = "https://api.twitch.tv/kraken";
 
 
-pub trait ToQueryString {
-    fn to_query_string(&self) -> String;
+pub trait IntoQueryString {
+    fn into_query_string(self) -> String;
 }
 
 pub struct TwitchHttpClient {
@@ -36,9 +36,9 @@ impl TwitchHttpClient {
         self.get_content_from_url(url)
     }
 
-    pub fn get_content_with_params<Q: ToQueryString>(&self, relative_url: &str, params: &Q) -> Result<String> {
+    pub fn get_content_with_params<Q: IntoQueryString>(&self, relative_url: &str, params: Q) -> Result<String> {
         let mut url_string = self.create_url_string(&relative_url);
-        url_string.push_str(&params.to_query_string());
+        url_string.push_str(&params.into_query_string());
         let url = Url::parse(&url_string).unwrap();
         self.get_content_from_url(url)
     }

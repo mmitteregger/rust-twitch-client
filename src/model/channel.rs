@@ -17,17 +17,17 @@ pub struct Channel {
     game: String,
     status: String,
     mature: bool,
-    delay: Option<f32>,
+    delay: Option<u32>,
     language: LocaleString,
     broadcaster_language: LocaleString,
     created_at: DateString,
     updated_at: DateString,
     logo: UrlString,
-    banner: UrlString,
-    video_banner: UrlString,
+    banner: Option<UrlString>,
+    video_banner: Option<UrlString>,
     background: Option<UrlString>,
-    profile_banner: UrlString,
-    profile_banner_background_color: String,
+    profile_banner: Option<UrlString>,
+    profile_banner_background_color: Option<UrlString>,
     partner: bool,
     url: UrlString,
     views: u32,
@@ -90,7 +90,7 @@ impl Channel {
     pub fn mature(&self) -> bool {
         self.mature
     }
-    pub fn delay(&self) -> Option<f32> {
+    pub fn delay(&self) -> Option<u32> {
         self.delay
     }
     pub fn language(&self) -> &LocaleString {
@@ -108,19 +108,19 @@ impl Channel {
     pub fn logo(&self) -> &UrlString {
         &self.logo
     }
-    pub fn banner(&self) -> &UrlString {
+    pub fn banner(&self) -> &Option<UrlString> {
         &self.banner
     }
-    pub fn video_banner(&self) -> &UrlString {
+    pub fn video_banner(&self) -> &Option<UrlString> {
         &self.video_banner
     }
     pub fn background(&self) -> &Option<UrlString> {
         &self.background
     }
-    pub fn profile_banner(&self) -> &UrlString {
+    pub fn profile_banner(&self) -> &Option<UrlString> {
         &self.profile_banner
     }
-    pub fn profile_banner_background_color(&self) -> &String {
+    pub fn profile_banner_background_color(&self) -> &Option<UrlString> {
         &self.profile_banner_background_color
     }
     pub fn partner(&self) -> bool {
