@@ -22,7 +22,7 @@ pub struct Channel {
     broadcaster_language: LocaleString,
     created_at: DateString,
     updated_at: DateString,
-    logo: UrlString,
+    logo: Option<UrlString>,
     banner: Option<UrlString>,
     video_banner: Option<UrlString>,
     background: Option<UrlString>,
@@ -105,7 +105,7 @@ impl Channel {
     pub fn updated_at(&self) -> &DateString {
         &self.updated_at
     }
-    pub fn logo(&self) -> &UrlString {
+    pub fn logo(&self) -> &Option<UrlString> {
         &self.logo
     }
     pub fn banner(&self) -> &Option<UrlString> {
