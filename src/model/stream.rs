@@ -2,6 +2,7 @@ use std::collections::BTreeMap;
 
 pub use model::TwitchLinks;
 pub use model::DateString;
+pub use model::UrlString;
 pub use model::image::ImageLinks;
 pub use model::channel::Channel;
 
@@ -16,10 +17,28 @@ pub struct StreamsResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct FeaturedStreamsResponse {
+    #[serde(rename="_links")]
+    links: BTreeMap<String, String>,
+    featured: Vec<FeaturedStream>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct StreamResponse {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     stream: Option<Stream>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct FeaturedStream {
+    text: String,
+    image: UrlString,
+    title: String,
+    sponsored: bool,
+    priority: u8,
+    scheduled: bool,
+    stream: Stream,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -70,6 +89,24 @@ impl StreamsResponse {
     }
 }
 
+impl TwitchLinks for FeaturedStreamsResponse {
+    fn links(&self) -> &BTreeMap<String, String> {
+        &self.links
+    }
+}
+
+impl FeaturedStreamsResponse {
+    pub fn link_self(&self) -> &String {
+        self.get_expected_link("self")
+    }
+    pub fn link_next(&self) -> &String {
+        self.get_expected_link("next")
+    }
+    pub fn featured(&self) -> &Vec<FeaturedStream> {
+        &self.featured
+    }
+}
+
 impl TwitchLinks for StreamResponse {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
@@ -84,6 +121,30 @@ impl StreamResponse {
         self.get_expected_link("channel")
     }
     pub fn stream(&self) -> &Option<Stream> {
+        &self.stream
+    }
+}
+
+impl FeaturedStream {
+    pub fn text(&self) -> &String {
+        &self.text
+    }
+    pub fn image(&self) -> &UrlString {
+        &self.image
+    }
+    pub fn title(&self) -> &String {
+        &self.title
+    }
+    pub fn sponsored(&self) -> bool {
+        self.sponsored
+    }
+    pub fn priority(&self) -> u8 {
+        self.priority
+    }
+    pub fn scheduled(&self) -> bool {
+        self.scheduled
+    }
+    pub fn stream(&self) -> &Stream {
         &self.stream
     }
 }

@@ -166,6 +166,54 @@ impl StreamsParamsBuilder {
     }
 }
 
+#[derive(Default, Debug, Clone, Hash, Eq, PartialEq)]
+pub struct FeaturedStreamsParams {
+    offset: Option<u32>,
+    limit: Option<u8>,
+}
+
+impl FeaturedStreamsParams {
+    pub fn offset(&self) -> Option<u32> {
+        self.offset
+    }
+    pub fn limit(&self) -> Option<u8> {
+        self.limit
+    }
+}
+
+impl IntoQueryString for FeaturedStreamsParams {
+    fn into_query_string(self) -> String {
+        params_into_query_string(vec![
+            ("offset", self.offset.map(|offset| offset.to_string())),
+            ("limit", self.limit.map(|limit| limit.to_string())),
+        ])
+    }
+}
+
+#[derive(Default)]
+pub struct FeaturedStreamsParamsBuilder {
+    offset: Option<u32>,
+    limit: Option<u8>,
+}
+
+impl FeaturedStreamsParamsBuilder {
+    pub fn offset(mut self, offset: u32) -> FeaturedStreamsParamsBuilder {
+        self.offset = Some(offset);
+        self
+    }
+    pub fn limit(mut self, limit: u8) -> FeaturedStreamsParamsBuilder {
+        self.limit = Some(limit);
+        self
+    }
+    pub fn build(self) -> FeaturedStreamsParams {
+        FeaturedStreamsParams {
+            offset: self.offset,
+            limit: self.limit,
+        }
+    }
+}
+
+
 
 fn params_into_query_string(params: Vec<(&str, Option<String>)>) -> String {
     let mut query_string = String::new();

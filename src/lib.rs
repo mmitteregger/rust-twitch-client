@@ -148,6 +148,12 @@ impl TwitchClient {
         let streams_res: model::stream::StreamsResponse = try!(serde_json::from_str(&response));
         Ok(streams_res)
     }
+
+    pub fn featured_streams(&self, params: FeaturedStreamsParams) -> Result<model::stream::FeaturedStreamsResponse> {
+        let response = try!(self.http_client.get_content_with_params("/streams/featured", params));
+        let featured_streams_res: model::stream::FeaturedStreamsResponse = try!(serde_json::from_str(&response));
+        Ok(featured_streams_res)
+    }
 }
 
 
@@ -230,6 +236,47 @@ mod tests {
         assert_eq!(streams_res.link_followed(), "https://api.twitch.tv/kraken/streams/followed");
         assert!(streams_res.total() > 0, "streams_res.total() = {} > 0", streams_res.total());
     }
+
+    #[test]
+    fn test_streams_with_custom_params() {
+        let client = create_test_twitch_client();
+        let params = StreamsParamsBuilder::default()
+                .offset(0)
+                .limit(2)
+                .stream_type(StreamType::Live)
+                .build();
+        let streams_res = client.streams(params).unwrap();
+        assert_eq!(streams_res.link_self(), "https://api.twitch.tv/kraken/streams?limit=2&offset=0&stream_type=live");
+        assert_eq!(streams_res.link_next(), "https://api.twitch.tv/kraken/streams?limit=2&offset=2&stream_type=live");
+        assert_eq!(streams_res.link_featured(), "https://api.twitch.tv/kraken/streams/featured");
+        assert_eq!(streams_res.link_summary(), "https://api.twitch.tv/kraken/streams/summary");
+        assert_eq!(streams_res.link_followed(), "https://api.twitch.tv/kraken/streams/followed");
+        assert!(streams_res.total() > 0, "streams_res.total() = {} > 0", streams_res.total());
+        assert_eq!(streams_res.streams().len(), 2);
+    }
+
+    #[test]
+    fn test_featured_streams_with_default_params() {
+        let client = create_test_twitch_client();
+        let featured_streams_res = client.featured_streams(FeaturedStreamsParams::default()).unwrap();
+        assert_eq!(featured_streams_res.link_self(), "https://api.twitch.tv/kraken/streams/featured?limit=25&offset=0");
+        assert_eq!(featured_streams_res.link_next(), "https://api.twitch.tv/kraken/streams/featured?limit=25&offset=25");
+        assert!(featured_streams_res.featured().len() > 0, "featured_streams_res.featured().len() = {} > 0", featured_streams_res.featured().len());
+    }
+
+    #[test]
+    fn test_featured_streams_with_custom_params() {
+        let client = create_test_twitch_client();
+        let params = FeaturedStreamsParamsBuilder::default()
+                .offset(0)
+                .limit(2)
+                .build();
+        let featured_streams_res = client.featured_streams(params).unwrap();
+        assert_eq!(featured_streams_res.link_self(), "https://api.twitch.tv/kraken/streams/featured?limit=2&offset=0");
+        assert_eq!(featured_streams_res.link_next(), "https://api.twitch.tv/kraken/streams/featured?limit=2&offset=2");
+        assert_eq!(featured_streams_res.featured().len(), 2);
+    }
+
 
 
     fn create_test_twitch_client() -> TwitchClient {
