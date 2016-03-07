@@ -1,6 +1,6 @@
 pub use model::UrlString;
 
-#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ImageLinks {
     template: UrlString,
     small: UrlString,

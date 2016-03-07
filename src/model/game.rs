@@ -4,7 +4,7 @@ pub use model::TwitchLinks;
 pub use model::image::ImageLinks;
 
 
-#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TopGamesResponse {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
@@ -13,14 +13,14 @@ pub struct TopGamesResponse {
     top: Vec<GameInfo>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct GameInfo {
     viewers: u32,
     channels: u32,
     game: Game,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Game {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,

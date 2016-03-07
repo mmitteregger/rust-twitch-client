@@ -4,21 +4,21 @@ pub use model::TwitchLinks;
 pub use model::DateString;
 
 
-#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BasicInfoResponse {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     token: Token,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Token {
     valid: bool,
     user_name: Option<String>,
     authorization: Option<Authorization>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Authorization {
     scopes: Vec<String>,
     created_at: DateString,
