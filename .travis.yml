@@ -7,3 +7,14 @@ before_script:
 branches:
   only:
     - master
+after_success: |
+  [ $TRAVIS_BRANCH = master ] &&
+  [ $TRAVIS_PULL_REQUEST = false ] &&
+  cargo doc &&
+  echo "<meta http-equiv=refresh content=0;url=twitch_client/index.html>" > target/doc/index.html &&
+  sudo pip install ghp-import &&
+  ghp-import -n target/doc &&
+  git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
+env:
+  global:
+    secure: EPmJ5CTpVfAJSdWkSr8s/NtzzVAxxeta+iUhGNGlX55OdeIN/0+/uaEV3nh99Tx3o6cjTY2oYZVfn0pvjInwj5wu+xedSrCpKCfMXxY/FzGvbmjpQUsTZPQI7Lg3ScDjmGUd+sSUOVfJt56hbwvwYdRa38eMTL682wxHSMIwnez54W8feS5uGpIl5m+/uXmgetKH1ymPelTNayE+BoI84h4u9M6pTvPVMmdXq9P6c+Lw5dtIT66iSewVWm5KxuMhD78Gk7FQI56W8pbAvR20EkSuEtHeX8gjOXNpy2aOio17ZkbQXgTcTLlhiS0CnEjzNUmbQFjIj09xgYIDrSS8B59eRqCaqQcpUJfQTIJl5cYiLkxxUdMoOTizMK4zkkiDU8i6vhEx6Da4lfWUekEu9dfhnp0vlojkk6mklWxgqvRlP2swvMwBCHWjMnd2cL9pEM6M/qUABJW6aw2KC7S+z4kXc1Y0ImXY7u0xXqA2aMRNUjaS8dXWFEWkuu8Hgdmln61J7z0fq+o7w8uIAHUReJF6T56yirTCD/diR8x5I8vANz/BLLiIk/+U2EMHhEFa9MM9JaSr7bPgUsPHbvgcnsRVTOrujBaDE8MD23R6+5R1NBf+DJ/gTnFvB5BSOUxzYcfy8S8NbvPDJ94B3/0WY08en/XZC0nX25ZTotvjsnk=
