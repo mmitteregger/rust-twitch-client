@@ -8,7 +8,7 @@ pub use model::channel::Channel;
 
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct StreamsResponse {
+pub struct Streams {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     #[serde(rename="_total")]
@@ -17,21 +17,21 @@ pub struct StreamsResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct FeaturedStreamsResponse {
+pub struct FeaturedStreams {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     featured: Vec<FeaturedStream>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct StreamResponse {
+pub struct ChannelStream {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     stream: Option<Stream>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct StreamsSummaryResponse {
+pub struct StreamsSummary {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     viewers: u32,
@@ -67,13 +67,13 @@ pub struct Stream {
 }
 
 
-impl TwitchLinks for StreamsResponse {
+impl TwitchLinks for Streams {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
     }
 }
 
-impl StreamsResponse {
+impl Streams {
     pub fn link_self(&self) -> &String {
         self.get_expected_link("self")
     }
@@ -97,13 +97,13 @@ impl StreamsResponse {
     }
 }
 
-impl TwitchLinks for FeaturedStreamsResponse {
+impl TwitchLinks for FeaturedStreams {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
     }
 }
 
-impl FeaturedStreamsResponse {
+impl FeaturedStreams {
     pub fn link_self(&self) -> &String {
         self.get_expected_link("self")
     }
@@ -115,13 +115,13 @@ impl FeaturedStreamsResponse {
     }
 }
 
-impl TwitchLinks for StreamResponse {
+impl TwitchLinks for ChannelStream {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
     }
 }
 
-impl StreamResponse {
+impl ChannelStream {
     pub fn link_self(&self) -> &String {
         self.get_expected_link("self")
     }
@@ -133,13 +133,13 @@ impl StreamResponse {
     }
 }
 
-impl TwitchLinks for StreamsSummaryResponse {
+impl TwitchLinks for StreamsSummary {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
     }
 }
 
-impl StreamsSummaryResponse {
+impl StreamsSummary {
     pub fn link_self(&self) -> &String {
         self.get_expected_link("self")
     }

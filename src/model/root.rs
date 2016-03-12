@@ -5,7 +5,7 @@ pub use model::DateString;
 
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct BasicInfoResponse {
+pub struct BasicInfo {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     token: Token,
@@ -26,13 +26,13 @@ pub struct Authorization {
 }
 
 
-impl TwitchLinks for BasicInfoResponse {
+impl TwitchLinks for BasicInfo {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
     }
 }
 
-impl BasicInfoResponse {
+impl BasicInfo {
     pub fn link_user(&self) -> &String {
         self.get_expected_link("user")
     }

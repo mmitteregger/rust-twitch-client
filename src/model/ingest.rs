@@ -4,7 +4,7 @@ pub use model::TwitchLinks;
 
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct IngestsResponse {
+pub struct Ingests {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     ingests: Vec<Ingest>,
@@ -21,13 +21,13 @@ pub struct Ingest {
 }
 
 
-impl TwitchLinks for IngestsResponse {
+impl TwitchLinks for Ingests {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
     }
 }
 
-impl IngestsResponse {
+impl Ingests {
     pub fn link_self(&self) -> &String {
         self.get_expected_link("self")
     }

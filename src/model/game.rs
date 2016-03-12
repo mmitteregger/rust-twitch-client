@@ -5,7 +5,7 @@ pub use model::image::ImageLinks;
 
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct TopGamesResponse {
+pub struct TopGames {
     #[serde(rename="_links")]
     links: BTreeMap<String, String>,
     #[serde(rename="_total")]
@@ -35,13 +35,13 @@ pub struct Game {
 }
 
 
-impl TwitchLinks for TopGamesResponse {
+impl TwitchLinks for TopGames {
     fn links(&self) -> &BTreeMap<String, String> {
         &self.links
     }
 }
 
-impl TopGamesResponse {
+impl TopGames {
     pub fn link_self(&self) -> &String {
         self.get_expected_link("self")
     }
