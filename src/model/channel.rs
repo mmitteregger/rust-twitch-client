@@ -16,7 +16,7 @@ pub struct Channel {
     display_name: String,
     game: String,
     status: String,
-    mature: bool,
+    mature: Option<bool>,
     delay: Option<u32>,
     language: LocaleString,
     broadcaster_language: LocaleString,
@@ -87,7 +87,7 @@ impl Channel {
     pub fn status(&self) -> &String {
         &self.status
     }
-    pub fn mature(&self) -> bool {
+    pub fn mature(&self) -> Option<bool> {
         self.mature
     }
     pub fn delay(&self) -> Option<u32> {
