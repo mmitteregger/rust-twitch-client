@@ -137,7 +137,7 @@ impl TwitchClient {
     }
 
     pub fn stream(&self, channel: &str) -> Result<model::stream::StreamResponse> {
-        let url = format!("/streams/{}/", channel);
+        let url = format!("/streams/{}", channel);
         let response = try!(self.http_client.get_content(&url));
         let stream_res: model::stream::StreamResponse = try!(serde_json::from_str(&response));
         Ok(stream_res)
@@ -159,6 +159,13 @@ impl TwitchClient {
         let response = try!(self.http_client.get_content_with_params("/streams/summary", params));
         let streams_summary_res: model::stream::StreamsSummaryResponse = try!(serde_json::from_str(&response));
         Ok(streams_summary_res)
+    }
+
+    pub fn channel(&self, channel: &str) -> Result<model::channel::Channel> {
+        let url = format!("/channels/{}", channel);
+        let response = try!(self.http_client.get_content(&url));
+        let channel: model::channel::Channel = try!(serde_json::from_str(&response));
+        Ok(channel)
     }
 }
 
@@ -300,6 +307,26 @@ mod tests {
                 .build();
         let streams_summary_res = client.streams_summary(params).unwrap();
         assert_eq!(streams_summary_res.link_self(), "https://api.twitch.tv/kraken/streams/summary?game=StarCraft+II%3A+Heart+of+the+Swarm");
+    }
+
+    #[test]
+    fn test_channel() {
+        let client = create_test_twitch_client();
+        let channel = client.channel("test_channel").unwrap();
+        assert_eq!(channel.link_self(), "https://api.twitch.tv/kraken/channels/test_channel");
+        assert_eq!(channel.link_follows(), "https://api.twitch.tv/kraken/channels/test_channel/follows");
+        assert_eq!(channel.link_commercial(), "https://api.twitch.tv/kraken/channels/test_channel/commercial");
+        assert_eq!(channel.link_stream_key(), "https://api.twitch.tv/kraken/channels/test_channel/stream_key");
+        assert_eq!(channel.link_chat(), "https://api.twitch.tv/kraken/chat/test_channel");
+        assert_eq!(channel.link_features(), "https://api.twitch.tv/kraken/channels/test_channel/features");
+        assert_eq!(channel.link_subscriptions(), "https://api.twitch.tv/kraken/channels/test_channel/subscriptions");
+        assert_eq!(channel.link_editors(), "https://api.twitch.tv/kraken/channels/test_channel/editors");
+        assert_eq!(channel.link_teams(), "https://api.twitch.tv/kraken/channels/test_channel/teams");
+        assert_eq!(channel.link_videos(), "https://api.twitch.tv/kraken/channels/test_channel/videos");
+        assert_eq!(channel.name(), "test_channel");
+        assert_eq!(channel.url(), "http://www.twitch.tv/test_channel");
+        assert!(channel.views() > 0, "channel.views() = {} > 0", channel.views());
+        assert!(channel.followers() > 0, "channel.followers() = {} > 0", channel.followers());
     }
 
 

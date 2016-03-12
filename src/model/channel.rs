@@ -14,12 +14,12 @@ pub struct Channel {
     id: u64,
     name: String,
     display_name: String,
-    game: String,
-    status: String,
+    game: Option<String>,
+    status: Option<String>,
     mature: Option<bool>,
     delay: Option<u32>,
     language: LocaleString,
-    broadcaster_language: LocaleString,
+    broadcaster_language: Option<LocaleString>,
     created_at: DateString,
     updated_at: DateString,
     logo: Option<UrlString>,
@@ -81,10 +81,10 @@ impl Channel {
     pub fn display_name(&self) -> &String {
         &self.display_name
     }
-    pub fn game(&self) -> &String {
+    pub fn game(&self) -> &Option<String> {
         &self.game
     }
-    pub fn status(&self) -> &String {
+    pub fn status(&self) -> &Option<String> {
         &self.status
     }
     pub fn mature(&self) -> Option<bool> {
@@ -96,7 +96,7 @@ impl Channel {
     pub fn language(&self) -> &LocaleString {
         &self.language
     }
-    pub fn broadcaster_language(&self) -> &LocaleString {
+    pub fn broadcaster_language(&self) -> &Option<LocaleString> {
         &self.broadcaster_language
     }
     pub fn created_at(&self) -> &DateString {
