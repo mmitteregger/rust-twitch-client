@@ -154,6 +154,12 @@ impl TwitchClient {
         let featured_streams_res: model::stream::FeaturedStreamsResponse = try!(serde_json::from_str(&response));
         Ok(featured_streams_res)
     }
+
+    pub fn streams_summary(&self, params: StreamsSummaryParams) -> Result<model::stream::StreamsSummaryResponse> {
+        let response = try!(self.http_client.get_content_with_params("/streams/summary", params));
+        let streams_summary_res: model::stream::StreamsSummaryResponse = try!(serde_json::from_str(&response));
+        Ok(streams_summary_res)
+    }
 }
 
 
@@ -275,6 +281,25 @@ mod tests {
         assert_eq!(featured_streams_res.link_self(), "https://api.twitch.tv/kraken/streams/featured?limit=2&offset=0");
         assert_eq!(featured_streams_res.link_next(), "https://api.twitch.tv/kraken/streams/featured?limit=2&offset=2");
         assert_eq!(featured_streams_res.featured().len(), 2);
+    }
+
+    #[test]
+    fn test_streams_summary_with_default_params() {
+        let client = create_test_twitch_client();
+        let streams_summary_res = client.streams_summary(StreamsSummaryParams::default()).unwrap();
+        assert_eq!(streams_summary_res.link_self(), "https://api.twitch.tv/kraken/streams/summary");
+        assert!(streams_summary_res.channels() > 0, "streams_summary_res.channels() = {} > 0", streams_summary_res.channels());
+        assert!(streams_summary_res.viewers() > 0, "streams_summary_res.viewers() = {} > 0", streams_summary_res.viewers());
+    }
+
+    #[test]
+    fn test_streams_summary_with_custom_params() {
+        let client = create_test_twitch_client();
+        let params = StreamsSummaryParamsBuilder::default()
+                .game("StarCraft II: Heart of the Swarm")
+                .build();
+        let streams_summary_res = client.streams_summary(params).unwrap();
+        assert_eq!(streams_summary_res.link_self(), "https://api.twitch.tv/kraken/streams/summary?game=StarCraft+II%3A+Heart+of+the+Swarm");
     }
 
 

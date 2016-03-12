@@ -213,6 +213,42 @@ impl FeaturedStreamsParamsBuilder {
     }
 }
 
+#[derive(Default, Debug, Clone, Hash, Eq, PartialEq)]
+pub struct StreamsSummaryParams {
+    game: Option<String>,
+}
+
+impl StreamsSummaryParams {
+    pub fn game(&self) -> &Option<String> {
+        &self.game
+    }
+}
+
+impl IntoQueryString for StreamsSummaryParams {
+    fn into_query_string(self) -> String {
+        params_into_query_string(vec![
+            ("game", self.game.map(|game| game)),
+        ])
+    }
+}
+
+#[derive(Default)]
+pub struct StreamsSummaryParamsBuilder {
+    game: Option<String>,
+}
+
+impl StreamsSummaryParamsBuilder {
+    pub fn game(mut self, game: &str) -> StreamsSummaryParamsBuilder {
+        self.game = Some(game.to_owned());
+        self
+    }
+    pub fn build(self) -> StreamsSummaryParams {
+        StreamsSummaryParams {
+            game: self.game,
+        }
+    }
+}
+
 
 
 fn params_into_query_string(params: Vec<(&str, Option<String>)>) -> String {

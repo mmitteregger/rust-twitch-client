@@ -31,6 +31,14 @@ pub struct StreamResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct StreamsSummaryResponse {
+    #[serde(rename="_links")]
+    links: BTreeMap<String, String>,
+    viewers: u32,
+    channels: u32,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FeaturedStream {
     text: String,
     image: UrlString,
@@ -122,6 +130,24 @@ impl StreamResponse {
     }
     pub fn stream(&self) -> &Option<Stream> {
         &self.stream
+    }
+}
+
+impl TwitchLinks for StreamsSummaryResponse {
+    fn links(&self) -> &BTreeMap<String, String> {
+        &self.links
+    }
+}
+
+impl StreamsSummaryResponse {
+    pub fn link_self(&self) -> &String {
+        self.get_expected_link("self")
+    }
+    pub fn viewers(&self) -> u32 {
+        self.viewers
+    }
+    pub fn channels(&self) -> u32 {
+        self.channels
     }
 }
 
