@@ -1,3 +1,4 @@
+#![doc(html_root_url = "http://mmitteregger.github.io/rust-twitch-client")]
 #![feature(custom_derive, plugin)]
 #![plugin(serde_macros)]
 #![warn(missing_docs)]
