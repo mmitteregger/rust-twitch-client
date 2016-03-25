@@ -1,15 +1,17 @@
 #![feature(custom_derive, plugin)]
 #![plugin(serde_macros)]
-// TODO: #![warn(missing_docs)]
+#![warn(missing_docs)]
+#![cfg_attr(test, deny(missing_docs))]
+#![cfg_attr(test, deny(warnings))]
 
-//! ## Overview
+//! # Overview
 //!
 //! Rust Twitch Client is a library for the [Twitch REST API](https://github.com/justintv/Twitch-API) written in Rust!
 //!
 //! It uses [hyper](https://github.com/hyperium/hyper) as http client
 //! and [serde](https://github.com/serde-rs/serde) for the serialization and deserialization of the REST entities.
 //!
-//! ## Examples
+//! # Examples
 //!
 //! Getting started:
 //!
@@ -68,23 +70,50 @@ pub use param::*;
 use http::TwitchHttpClient;
 use error::Result;
 
-
+/// Readonly client for the [Twitch API](https://github.com/justintv/twitch-api).
+///
+/// Currently Twitch API version 3 is used.
+///
+/// By using the Twitch Client you agree to follow the
+/// [Twitch API Terms of Service](https://www.twitch.tv/user/legal?page=api_terms_of_service)
+/// and the [Twitch Terms of Service](https://www.twitch.tv/p/api_terms_of_service).
+/// This library is in no way affiliated with, authorized, maintained, sponsored
+/// or endorsed by Twitch or any of its affiliates or subsidiaries
+///
+/// # Examples
+///
+/// ```
+/// use twitch_client::*;
+///
+/// let twitch_client = TwitchClient::new();
+/// let top_games = twitch_client.top_games(TopGamesParams::default()).unwrap();
+/// println!("Total games: {}", top_games.total());
+/// ```
 pub struct TwitchClient {
     http_client: TwitchHttpClient,
 }
 
 impl TwitchClient {
+
+    /// Constructs a new instance without client id and with a default hyper client.
+    ///
+    /// To specify a client id (highly recommended to avoid being rate limited by Twitch)
+    /// and/or specify a custom configured hyper client use the `TwitchClientBuilder` instead.
     pub fn new() -> TwitchClient {
         TwitchClientBuilder::new().build()
     }
+
 }
 
+/// Builder for the `TwitchClient`.
 pub struct TwitchClientBuilder {
     client_id: Option<String>,
     hyper_client: Option<hyper::Client>,
 }
 
 impl TwitchClientBuilder {
+
+    /// Constructs a new builder instance without client id and with a default hyper client.
     pub fn new() -> TwitchClientBuilder {
         TwitchClientBuilder {
             client_id: None,
@@ -92,16 +121,23 @@ impl TwitchClientBuilder {
         }
     }
 
+    /// Sets the Twitch client id.
+    /// See [https://github.com/justintv/twitch-api#rate-limits](https://github.com/justintv/twitch-api#rate-limits)
+    /// for more information.
     pub fn client_id(mut self, client_id: &str) -> TwitchClientBuilder {
         self.client_id = Some(client_id.to_owned());
         self
     }
 
+    /// Sets a custom configured hyper client.
+    /// See [hyper::client::Client](http://hyper.rs/hyper/hyper/client/struct.Client.html)
+    /// for more information.
     pub fn hyper_client(mut self, hyper_client: hyper::Client) -> TwitchClientBuilder {
         self.hyper_client = Some(hyper_client);
         self
     }
 
+    /// Constructs the `TwitchClient` with the specified options.
     pub fn build(self) -> TwitchClient {
         let client = match self.hyper_client {
             Some(client) => client,
@@ -118,24 +154,38 @@ impl TwitchClientBuilder {
 
 
 impl TwitchClient {
+
+    /// Get games by number of viewers.
+    ///
+    /// Returns a list of games objects sorted by number of current viewers on Twitch, most popular first.
     pub fn top_games(&self, params: TopGamesParams) -> Result<model::game::TopGames> {
         let response = try!(self.http_client.get_content_with_params("/games/top", params));
         let top_games: model::game::TopGames = try!(serde_json::from_str(&response));
         Ok(top_games)
     }
 
+    /// Get list of ingests.
+    ///
+    /// Returns a list of ingest objects.
     pub fn ingests(&self) -> Result<model::ingest::Ingests> {
         let response = try!(self.http_client.get_content("/ingests"));
         let ingests: model::ingest::Ingests = try!(serde_json::from_str(&response));
         Ok(ingests)
     }
 
+    /// Get top level links object and authorization status.
+    ///
+    /// Basic information about the API and authentication status.
+    /// If you are authenticated, the response includes the status of your token and links to other related resources.
     pub fn basic_info(&self) -> Result<model::root::BasicInfo> {
         let response = try!(self.http_client.get_content("/"));
         let basic_info: model::root::BasicInfo = try!(serde_json::from_str(&response));
         Ok(basic_info)
     }
 
+    /// Get stream object.
+    ///
+    /// Returns a stream object if live.
     pub fn stream(&self, channel: &str) -> Result<model::stream::ChannelStream> {
         let url = format!("/streams/{}", channel);
         let response = try!(self.http_client.get_content(&url));
@@ -143,24 +193,37 @@ impl TwitchClient {
         Ok(channel_stream)
     }
 
+    /// Get stream object.
+    ///
+    /// Returns a list of stream objects that are queried by a number of parameters
+    /// sorted by number of viewers descending.
     pub fn streams(&self, params: StreamsParams) -> Result<model::stream::Streams> {
         let response = try!(self.http_client.get_content_with_params("/streams", params));
         let streams: model::stream::Streams = try!(serde_json::from_str(&response));
         Ok(streams)
     }
 
+    /// Get a list of featured streams.
+    ///
+    /// Returns a list of featured (promoted) stream objects.
     pub fn featured_streams(&self, params: FeaturedStreamsParams) -> Result<model::stream::FeaturedStreams> {
         let response = try!(self.http_client.get_content_with_params("/streams/featured", params));
         let featured_streams: model::stream::FeaturedStreams = try!(serde_json::from_str(&response));
         Ok(featured_streams)
     }
 
+    /// Get a summary of streams.
+    ///
+    /// Returns a summary of current streams.
     pub fn streams_summary(&self, params: StreamsSummaryParams) -> Result<model::stream::StreamsSummary> {
         let response = try!(self.http_client.get_content_with_params("/streams/summary", params));
         let streams_summary: model::stream::StreamsSummary = try!(serde_json::from_str(&response));
         Ok(streams_summary)
     }
 
+    /// Get channel object.
+    ///
+    /// Returns a channel object.
     pub fn channel(&self, channel: &str) -> Result<model::channel::Channel> {
         let url = format!("/channels/{}", channel);
         let response = try!(self.http_client.get_content(&url));
@@ -324,7 +387,7 @@ mod tests {
         assert_eq!(channel.link_teams(), "https://api.twitch.tv/kraken/channels/test_channel/teams");
         assert_eq!(channel.link_videos(), "https://api.twitch.tv/kraken/channels/test_channel/videos");
         assert_eq!(channel.name(), "test_channel");
-        assert_eq!(channel.url(), "http://www.twitch.tv/test_channel");
+        assert_eq!(channel.url(), "https://secure.twitch.tv/test_channel");
         assert!(channel.views() > 0, "channel.views() = {} > 0", channel.views());
         assert!(channel.followers() > 0, "channel.followers() = {} > 0", channel.followers());
     }

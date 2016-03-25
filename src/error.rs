@@ -1,3 +1,5 @@
+//! Error and Result module.
+
 use std::error::Error as StdError;
 use std::fmt;
 use std::io::Error as IoError;
@@ -6,7 +8,7 @@ use hyper::client::response::Response;
 use hyper::error::Error as HyperError;
 use serde_json::error::Error as JsonError;
 
-
+/// Result type from methods that can have Twitch Client Errors.
 pub type Result<T> = ::std::result::Result<T, Error>;
 
 use self::Error::{
@@ -18,6 +20,13 @@ use self::Error::{
 };
 
 
+/// Twitch Client error.
+///
+/// Wraps errors that may occur during communication with Twitch
+/// or when trying to deserialize the JSON response.
+///
+/// This list is intended to grow over time
+/// and it is not recommended to exhaustively match against it.
 #[derive(Debug)]
 pub enum Error {
     /// An twitch server error that is indicated by the response status 5xx (Server Error)
