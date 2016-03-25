@@ -4,12 +4,14 @@
 
 Rust Twitch Client is a library for the [Twitch REST API](https://github.com/justintv/Twitch-API) written in Rust!
 
-It uses [hyper](https://github.com/hyperium/hyper) as http client 
+It uses [hyper](https://github.com/hyperium/hyper) as http client
 and [serde](https://github.com/serde-rs/serde) for the serialization and deserialization of the REST entities.
+
+Documentation is available at: http://mmitteregger.github.io/rust-twitch-client
 
 ## Installation
 
-Until the first version of this library is released and available on [crates.io](https://crates.io) 
+Until the first version of this library is released and available on [crates.io](https://crates.io)
 the dependency has to be added using the git url.
 
 ```INI
