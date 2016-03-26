@@ -23,11 +23,20 @@ pub struct TwitchHttpClient {
 }
 
 impl TwitchHttpClient {
-    pub fn new(client_id: Option<String>, hyper_client: hyper::Client) -> TwitchHttpClient {
+
+    pub fn new() -> TwitchHttpClient {
         TwitchHttpClient {
-            client_id: client_id,
-            hyper_client: hyper_client
+            client_id: None,
+            hyper_client: hyper::Client::new()
         }
+    }
+
+    pub fn set_client_id(&mut self, client_id: &str) {
+        self.client_id = Some(client_id.to_owned());
+    }
+
+    pub fn set_hyper_client(&mut self, hyper_client: hyper::Client) {
+        self.hyper_client = hyper_client;
     }
 
     pub fn get_content(&self, relative_url: &str) -> Result<String> {

@@ -71,60 +71,32 @@ impl TwitchClient {
 
     /// Constructs a new instance without client id and with a default hyper client.
     ///
-    /// To specify a client id (highly recommended to avoid being rate limited by Twitch)
-    /// and/or specify a custom configured hyper client use the `TwitchClientBuilder` instead.
+    /// It is highly recommended to specify a client id to avoid being rate limited by Twitch
+    /// with the `with_client_id` method.
     pub fn new() -> TwitchClient {
-        TwitchClientBuilder::new().build()
-    }
-
-}
-
-/// Builder for the `TwitchClient`.
-pub struct TwitchClientBuilder {
-    client_id: Option<String>,
-    hyper_client: Option<hyper::Client>,
-}
-
-impl TwitchClientBuilder {
-
-    /// Constructs a new builder instance without client id and with a default hyper client.
-    pub fn new() -> TwitchClientBuilder {
-        TwitchClientBuilder {
-            client_id: None,
-            hyper_client: None,
+        TwitchClient {
+            http_client: TwitchHttpClient::new(),
         }
     }
 
     /// Sets the Twitch client id.
+    ///
     /// See [https://github.com/justintv/twitch-api#rate-limits](https://github.com/justintv/twitch-api#rate-limits)
     /// for more information.
-    pub fn client_id(mut self, client_id: &str) -> TwitchClientBuilder {
-        self.client_id = Some(client_id.to_owned());
+    pub fn with_client_id(mut self, client_id: &str) -> TwitchClient {
+        self.http_client.set_client_id(client_id);
         self
     }
 
     /// Sets a custom configured hyper client.
+    ///
     /// See [hyper::client::Client](http://hyper.rs/hyper/hyper/client/struct.Client.html)
     /// for more information.
-    pub fn hyper_client(mut self, hyper_client: hyper::Client) -> TwitchClientBuilder {
-        self.hyper_client = Some(hyper_client);
+    pub fn with_hyper_client(mut self, hyper_client: hyper::Client) -> TwitchClient {
+        self.http_client.set_hyper_client(hyper_client);
         self
     }
-
-    /// Constructs the `TwitchClient` with the specified options.
-    pub fn build(self) -> TwitchClient {
-        let client = match self.hyper_client {
-            Some(client) => client,
-            None => hyper::Client::new(),
-        };
-
-        TwitchClient {
-            http_client: TwitchHttpClient::new(self.client_id, client),
-        }
-    }
 }
-
-
 
 
 impl TwitchClient {
@@ -366,14 +338,15 @@ mod tests {
 
     fn create_test_twitch_client() -> TwitchClient {
         let auth = read_auth();
-        let mut twitch_client_builder = TwitchClientBuilder::new();
+        let mut twitch_client = TwitchClient::new();
 
         match auth {
-            Some(auth) => twitch_client_builder = twitch_client_builder.client_id(&auth.client_id),
+            Some(auth) => {
+                twitch_client = twitch_client.with_client_id(&auth.client_id);
+            },
             None => {},
         }
 
-        let twitch_client = twitch_client_builder.build();
         twitch_client
     }
 
