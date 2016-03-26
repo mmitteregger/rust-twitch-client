@@ -181,7 +181,7 @@ pub struct Stream {
     links: BTreeMap<String, String>,
     #[serde(rename="_id")]
     id: u64,
-    game: String,
+    game: Option<String>,
     viewers: u32,
     average_fps: f64,
     delay: Option<u32>,
@@ -362,7 +362,7 @@ impl Stream {
         self.id
     }
     /// Example value: "StarCraft II: Heart of the Swarm"
-    pub fn game(&self) -> &String {
+    pub fn game(&self) -> &Option<String> {
         &self.game
     }
     /// Example value: 2123
