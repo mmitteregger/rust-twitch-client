@@ -14,39 +14,12 @@
 //!
 //! # Examples
 //!
-//! Getting started:
-//!
 //! ```
 //! use twitch_client::*;
 //!
 //! fn main() {
 //!     let twitch_client = TwitchClient::new();
 //!     let top_games = twitch_client.top_games(TopGamesParams::default()).unwrap();
-//!
-//!     println!("Total games: {}", top_games.total());
-//!     println!("---");
-//!     for game_info in top_games.top() {
-//!         println!("Game: {}, Viewers: {}", game_info.game().name(), game_info.viewers());
-//!     }
-//!     println!("---");
-//! }
-//! ```
-//!
-//! Use builders to specify arguments:
-//!
-//! ```
-//! use twitch_client::*;
-//!
-//! fn main() {
-//!     let twitch_client = TwitchClientBuilder::new()
-//!             .client_id("<YOUR_CLIENT_ID>")
-//!             .build();
-//!     let params = TopGamesParamsBuilder::default()
-//!             .offset(0)
-//!             .limit(2)
-//!             .build();
-//!     let top_games = twitch_client.top_games(params).unwrap();
-//!     assert_eq!(top_games.top().len(), 2);
 //!
 //!     println!("Total games: {}", top_games.total());
 //!     println!("---");
@@ -255,10 +228,9 @@ mod tests {
     #[test]
     fn test_top_games_with_custom_params() {
         let client = create_test_twitch_client();
-        let params = TopGamesParamsBuilder::default()
-                .offset(0)
-                .limit(2)
-                .build();
+        let params = TopGamesParams::new()
+                .with_offset(0)
+                .with_limit(2);
         let top_games = client.top_games(params).unwrap();
         assert_eq!(top_games.link_self(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=0");
         assert_eq!(top_games.link_next(), "https://api.twitch.tv/kraken/games/top?limit=2&offset=2");
@@ -317,11 +289,10 @@ mod tests {
     #[test]
     fn test_streams_with_custom_params() {
         let client = create_test_twitch_client();
-        let params = StreamsParamsBuilder::default()
-                .offset(0)
-                .limit(2)
-                .stream_type(StreamType::Live)
-                .build();
+        let params = StreamsParams::new()
+                .with_offset(0)
+                .with_limit(2)
+                .with_stream_type(StreamType::Live);
         let streams = client.streams(params).unwrap();
         assert_eq!(streams.link_self(), "https://api.twitch.tv/kraken/streams?limit=2&offset=0&stream_type=live");
         assert_eq!(streams.link_next(), "https://api.twitch.tv/kraken/streams?limit=2&offset=2&stream_type=live");
@@ -344,10 +315,9 @@ mod tests {
     #[test]
     fn test_featured_streams_with_custom_params() {
         let client = create_test_twitch_client();
-        let params = FeaturedStreamsParamsBuilder::default()
-                .offset(0)
-                .limit(2)
-                .build();
+        let params = FeaturedStreamsParams::new()
+                .with_offset(0)
+                .with_limit(2);
         let featured_streams = client.featured_streams(params).unwrap();
         assert_eq!(featured_streams.link_self(), "https://api.twitch.tv/kraken/streams/featured?limit=2&offset=0");
         assert_eq!(featured_streams.link_next(), "https://api.twitch.tv/kraken/streams/featured?limit=2&offset=2");
@@ -366,9 +336,8 @@ mod tests {
     #[test]
     fn test_streams_summary_with_custom_params() {
         let client = create_test_twitch_client();
-        let params = StreamsSummaryParamsBuilder::default()
-                .game("StarCraft II: Heart of the Swarm")
-                .build();
+        let params = StreamsSummaryParams::new()
+                .with_game("StarCraft II: Heart of the Swarm");
         let streams_summary = client.streams_summary(params).unwrap();
         assert_eq!(streams_summary.link_self(), "https://api.twitch.tv/kraken/streams/summary?game=StarCraft+II%3A+Heart+of+the+Swarm");
     }

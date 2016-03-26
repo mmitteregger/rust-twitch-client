@@ -9,15 +9,15 @@ use http::IntoQueryString;
 
 /// Parameters for the top games.
 ///
-/// Use the `TopGamesParamsBuilder` to specify them
-/// or use `TopGamesParams::default()` for the Twitch default.
-///
 /// # Examples
 ///
 /// ```
 /// use twitch_client::param::TopGamesParams;
 ///
-/// let top_games_params = TopGamesParams::default();
+/// let default_params = TopGamesParams::default();
+/// let custom_params = TopGamesParams::new()
+///         .with_offset(40)
+///         .with_limit(20);
 /// ```
 #[derive(Default, Debug, Clone, Hash, Eq, PartialEq)]
 pub struct TopGamesParams {
@@ -26,17 +26,25 @@ pub struct TopGamesParams {
 }
 
 impl TopGamesParams {
-    /// Object offset for pagination.
+    /// Constructs a new instance.
     ///
-    /// Twitch defaults to 0 if `None`.
-    pub fn offset(&self) -> Option<u32> {
-        self.offset
+    /// Synonym for TopGamesParams::default() but preferred if custom parameters are set.
+    pub fn new() -> TopGamesParams {
+        TopGamesParams::default()
+    }
+    /// Offset for pagination.
+    ///
+    /// Twitch defaults to 0 if not set.
+    pub fn with_offset(mut self, offset: u32) -> TopGamesParams {
+        self.offset = Some(offset);
+        self
     }
     /// Maximum number of objects in array.
     ///
-    /// Twitch defaults to 10 if `None`. Maximum is 100.
-    pub fn limit(&self) -> Option<u8> {
-        self.limit
+    /// Twitch defaults to 10 if not set. Maximum is 100.
+    pub fn with_limit(mut self, limit: u8) -> TopGamesParams {
+        self.limit = Some(limit);
+        self
     }
 }
 
@@ -46,50 +54,6 @@ impl IntoQueryString for TopGamesParams {
             ("offset", self.offset.map(|offset| offset.to_string())),
             ("limit", self.limit.map(|limit| limit.to_string())),
         ])
-    }
-}
-
-/// Builder for the `TopGamesParams`.
-///
-/// Use `TopGamesParamsBuilder::default()` to start specifying parameters.
-///
-/// # Examples
-///
-/// ```
-/// use twitch_client::param::TopGamesParamsBuilder;
-///
-/// let top_games_params = TopGamesParamsBuilder::default()
-///         .offset(40)
-///         .limit(20)
-///         .build();
-/// ```
-#[derive(Default)]
-pub struct TopGamesParamsBuilder {
-    offset: Option<u32>,
-    limit: Option<u8>,
-}
-
-impl TopGamesParamsBuilder {
-    /// Object offset for pagination.
-    ///
-    /// Default is 0.
-    pub fn offset(mut self, offset: u32) -> TopGamesParamsBuilder {
-        self.offset = Some(offset);
-        self
-    }
-    /// Maximum number of objects in array.
-    ///
-    /// Default is 10. Maximum is 100.
-    pub fn limit(mut self, limit: u8) -> TopGamesParamsBuilder {
-        self.limit = Some(limit);
-        self
-    }
-    /// Constructs the `TopGamesParams` with the specified parameters.
-    pub fn build(self) -> TopGamesParams {
-        TopGamesParams {
-            offset: self.offset,
-            limit: self.limit,
-        }
     }
 }
 
@@ -112,15 +76,18 @@ impl StreamType {
 
 /// Parameters for the streams.
 ///
-/// Use the `StreamsParamsBuilder` to specify them
-/// or use `StreamsParams::default()` for the Twitch default.
-///
 /// # Examples
 ///
 /// ```
 /// use twitch_client::param::StreamsParams;
+/// use twitch_client::param::StreamType;
 ///
-/// let streams_params = StreamsParams::default();
+/// let default_params = StreamsParams::default();
+/// let custom_params = StreamsParams::new()
+///         .with_offset(40)
+///         .with_limit(20)
+///         .with_game("StarCraft II: Heart of the Swarm")
+///         .with_stream_type(StreamType::Live);
 /// ```
 #[derive(Default, Debug, Clone, Hash, Eq, PartialEq)]
 pub struct StreamsParams {
@@ -133,41 +100,62 @@ pub struct StreamsParams {
 }
 
 impl StreamsParams {
+    /// Constructs a new instance.
+    ///
+    /// Synonym for StreamsParams::default() but preferred if custom parameters are set.
+    pub fn new() -> StreamsParams {
+        StreamsParams::default()
+    }
     /// Streams categorized under game.
     ///
-    /// Twitch defaults to all games if `None`.
-    pub fn game(&self) -> &Option<String> {
-        &self.game
+    /// Twitch defaults to all games if not set.
+    pub fn with_game(mut self, game: &str) -> StreamsParams {
+        self.game = Some(game.to_owned());
+        self
+    }
+    /// Streams from a channel.
+    /// Can be called multiple times to specify a list of channels.
+    ///
+    /// Twitch defaults to all channels if not set.
+    pub fn with_channel(mut self, channel: &str) -> StreamsParams {
+        self.channels.push(channel.to_owned());
+        self
     }
     /// Streams from a list of channels.
+    /// Can be called with an empty Vec to clear the list and use the default again.
     ///
-    /// Twitch defaults to all channels if empty.
-    pub fn channels(&self) -> &Vec<String> {
-        &self.channels
+    /// Twitch defaults to all channels if not set or empty.
+    pub fn with_channels(mut self, channels: Vec<String>) -> StreamsParams {
+        self.channels = channels;
+        self
     }
-    /// Object offset for pagination.
+    /// Offset for pagination.
     ///
-    /// Twitch defaults to 0 if `None`.
-    pub fn offset(&self) -> Option<u32> {
-        self.offset
+    /// Twitch defaults to 0 if not set.
+    pub fn with_offset(mut self, offset: u32) -> StreamsParams {
+        self.offset = Some(offset);
+        self
     }
     /// Maximum number of objects in array.
     ///
-    /// Twitch defaults to 25 if `None`. Maximum is 100.
-    pub fn limit(&self) -> Option<u8> {
-        self.limit
+    /// Twitch defaults to 25 if not set. Maximum is 100.
+    pub fn with_limit(mut self, limit: u8) -> StreamsParams {
+        self.limit = Some(limit);
+        self
     }
-    /// Only shows streams from applications of client_id.
+    /// Only shows streams from applications of `client_id`.
     ///
-    /// Twitch defaults to all applications if `None`.
-    pub fn client_id(&self) -> &Option<String> {
-        &self.client_id
+    /// Twitch defaults to all applications if not set.
+    pub fn with_client_id(mut self, client_id: &str) -> StreamsParams {
+        self.client_id = Some(client_id.to_owned());
+        self
     }
     /// Only shows streams from a certain type.
     ///
-    /// Twitch defaults to all if `None`.
-    pub fn stream_type(&self) -> Option<StreamType> {
-        self.stream_type
+    /// Twitch defaults to all if not set.
+    pub fn with_stream_type(mut self, stream_type: StreamType) -> StreamsParams {
+        self.stream_type = Some(stream_type);
+        self
     }
 }
 
@@ -191,102 +179,7 @@ impl IntoQueryString for StreamsParams {
     }
 }
 
-/// Builder for the `StreamsParams`.
-///
-/// Use `StreamsParamsBuilder::default()` to start specifying parameters.
-///
-/// # Examples
-///
-/// ```
-/// use twitch_client::param::StreamsParamsBuilder;
-/// use twitch_client::param::StreamType;
-///
-/// let streams_params = StreamsParamsBuilder::default()
-///         .offset(40)
-///         .limit(20)
-///         .game("StarCraft II: Heart of the Swarm")
-///         .stream_type(StreamType::Live)
-///         .build();
-/// ```
-#[derive(Default)]
-pub struct StreamsParamsBuilder {
-    game: Option<String>,
-    channels: Vec<String>,
-    offset: Option<u32>,
-    limit: Option<u8>,
-    client_id: Option<String>,
-    stream_type: Option<StreamType>,
-}
-
-impl StreamsParamsBuilder {
-    /// Streams categorized under game.
-    ///
-    /// Default is all games.
-    pub fn game(mut self, game: &str) -> StreamsParamsBuilder {
-        self.game = Some(game.to_owned());
-        self
-    }
-    /// Streams from a channel.
-    /// Can be called multiple times to specify a list of channels.
-    ///
-    /// Default is all channels.
-    pub fn channel(mut self, channel: &str) -> StreamsParamsBuilder {
-        self.channels.push(channel.to_owned());
-        self
-    }
-    /// Streams from a list of channels.
-    /// Can be called with an empty Vec to clear the list and use the default again.
-    ///
-    /// Default is all channels.
-    pub fn channels(mut self, channels: Vec<String>) -> StreamsParamsBuilder {
-        self.channels = channels;
-        self
-    }
-    /// Object offset for pagination.
-    ///
-    /// Default is 0.
-    pub fn offset(mut self, offset: u32) -> StreamsParamsBuilder {
-        self.offset = Some(offset);
-        self
-    }
-    /// Maximum number of objects in array.
-    ///
-    /// Default is 25. Maximum is 100.
-    pub fn limit(mut self, limit: u8) -> StreamsParamsBuilder {
-        self.limit = Some(limit);
-        self
-    }
-    /// Only shows streams from applications of `client_id`.
-    ///
-    /// Default is all applications.
-    pub fn client_id(mut self, client_id: &str) -> StreamsParamsBuilder {
-        self.client_id = Some(client_id.to_owned());
-        self
-    }
-    /// Only shows streams from a certain type.
-    ///
-    /// Default is all types.
-    pub fn stream_type(mut self, stream_type: StreamType) -> StreamsParamsBuilder {
-        self.stream_type = Some(stream_type);
-        self
-    }
-    /// Constructs the `StreamsParams` with the specified parameters.
-    pub fn build(self) -> StreamsParams {
-        StreamsParams {
-            game: self.game,
-            channels: self.channels,
-            offset: self.offset,
-            limit: self.limit,
-            client_id: self.client_id,
-            stream_type: self.stream_type,
-        }
-    }
-}
-
 /// Parameters for the featured streams.
-///
-/// Use the `FeaturedStreamsParamsBuilder` to specify them
-/// or use `FeaturedStreamsParams::default()` for the Twitch default.
 ///
 /// Note that the number of promoted streams varies from day to day,
 /// and there is no guarantee on how many streams will be promoted at a given time.
@@ -296,7 +189,10 @@ impl StreamsParamsBuilder {
 /// ```
 /// use twitch_client::param::FeaturedStreamsParams;
 ///
-/// let featured_streams_params = FeaturedStreamsParams::default();
+/// let default_params = FeaturedStreamsParams::default();
+/// let custom_params = FeaturedStreamsParams::new()
+///         .with_offset(5)
+///         .with_limit(5);
 /// ```
 #[derive(Default, Debug, Clone, Hash, Eq, PartialEq)]
 pub struct FeaturedStreamsParams {
@@ -305,17 +201,25 @@ pub struct FeaturedStreamsParams {
 }
 
 impl FeaturedStreamsParams {
-    /// Object offset for pagination.
+    /// Constructs a new instance.
     ///
-    /// Twitch defaults to 0 if `None`.
-    pub fn offset(&self) -> Option<u32> {
-        self.offset
+    /// Synonym for FeaturedStreamsParams::default() but preferred if custom parameters are set.
+    pub fn new() -> FeaturedStreamsParams {
+        FeaturedStreamsParams::default()
+    }
+    /// Offset for pagination.
+    ///
+    /// Twitch defaults to 0 if not set.
+    pub fn with_offset(mut self, offset: u32) -> FeaturedStreamsParams {
+        self.offset = Some(offset);
+        self
     }
     /// Maximum number of objects in array.
     ///
-    /// Twitch defaults to 25 if `None`. Maximum is 100.
-    pub fn limit(&self) -> Option<u8> {
-        self.limit
+    /// Twitch defaults to 25 if not set. Maximum is 100.
+    pub fn with_limit(mut self, limit: u8) -> FeaturedStreamsParams {
+        self.limit = Some(limit);
+        self
     }
 }
 
@@ -328,61 +232,16 @@ impl IntoQueryString for FeaturedStreamsParams {
     }
 }
 
-/// Builder for the `FeaturedStreamsParams`.
-///
-/// Use `FeaturedStreamsParamsBuilder::default()` to start specifying parameters.
-///
-/// # Examples
-///
-/// ```
-/// use twitch_client::param::FeaturedStreamsParamsBuilder;
-///
-/// let featured_streams_params = FeaturedStreamsParamsBuilder::default()
-///         .offset(5)
-///         .limit(5)
-///         .build();
-/// ```
-#[derive(Default)]
-pub struct FeaturedStreamsParamsBuilder {
-    offset: Option<u32>,
-    limit: Option<u8>,
-}
-
-impl FeaturedStreamsParamsBuilder {
-    /// Object offset for pagination.
-    ///
-    /// Default is 0.
-    pub fn offset(mut self, offset: u32) -> FeaturedStreamsParamsBuilder {
-        self.offset = Some(offset);
-        self
-    }
-    /// Maximum number of objects in array.
-    ///
-    /// Default is 25. Maximum is 100.
-    pub fn limit(mut self, limit: u8) -> FeaturedStreamsParamsBuilder {
-        self.limit = Some(limit);
-        self
-    }
-    /// Constructs the `FeaturedStreamsParams` with the specified parameters.
-    pub fn build(self) -> FeaturedStreamsParams {
-        FeaturedStreamsParams {
-            offset: self.offset,
-            limit: self.limit,
-        }
-    }
-}
-
 /// Parameters for the streams summary.
-///
-/// Use the `StreamsSummaryParamsBuilder` to specify them
-/// or use `StreamsSummaryParams::default()` for the Twitch default.
 ///
 /// # Examples
 ///
 /// ```
 /// use twitch_client::param::StreamsSummaryParams;
 ///
-/// let streams_summary_params = StreamsSummaryParams::default();
+/// let default_params = StreamsSummaryParams::default();
+/// let custom_params = StreamsSummaryParams::new()
+///         .with_game("StarCraft II: Heart of the Swarm");
 /// ```
 #[derive(Default, Debug, Clone, Hash, Eq, PartialEq)]
 pub struct StreamsSummaryParams {
@@ -390,11 +249,18 @@ pub struct StreamsSummaryParams {
 }
 
 impl StreamsSummaryParams {
+    /// Constructs a new instance.
+    ///
+    /// Synonym for StreamsSummaryParams::default() but preferred if custom parameters are set.
+    pub fn new() -> StreamsSummaryParams {
+        StreamsSummaryParams::default()
+    }
     /// Streams categorized under game.
     ///
-    /// Twitch defaults to all games if `None`.
-    pub fn game(&self) -> &Option<String> {
-        &self.game
+    /// Twitch defaults to all games if not set.
+    pub fn with_game(mut self, game: &str) -> StreamsSummaryParams {
+        self.game = Some(game.to_owned());
+        self
     }
 }
 
@@ -403,40 +269,6 @@ impl IntoQueryString for StreamsSummaryParams {
         params_into_query_string(vec![
             ("game", self.game.map(|game| game)),
         ])
-    }
-}
-
-/// Builder for the `StreamsSummaryParams`.
-///
-/// Use `StreamsSummaryParamsBuilder::default()` to start specifying parameters.
-///
-/// # Examples
-///
-/// ```
-/// use twitch_client::param::StreamsSummaryParamsBuilder;
-///
-/// let streams_summary_params = StreamsSummaryParamsBuilder::default()
-///         .game("StarCraft II: Heart of the Swarm")
-///         .build();
-/// ```
-#[derive(Default)]
-pub struct StreamsSummaryParamsBuilder {
-    game: Option<String>,
-}
-
-impl StreamsSummaryParamsBuilder {
-    /// Streams categorized under game.
-    ///
-    /// Default is all games.
-    pub fn game(mut self, game: &str) -> StreamsSummaryParamsBuilder {
-        self.game = Some(game.to_owned());
-        self
-    }
-    /// Constructs the `StreamsSummaryParams` with the specified parameters.
-    pub fn build(self) -> StreamsSummaryParams {
-        StreamsSummaryParams {
-            game: self.game,
-        }
     }
 }
 
@@ -484,26 +316,23 @@ mod tests {
 
     #[test]
     fn test_one_param_should_only_set_one_query_value() {
-        let params = TopGamesParamsBuilder::default()
-                .limit(10)
-                .build();
+        let params = TopGamesParams::new()
+                .with_limit(10);
         assert_eq!(params.into_query_string(), "?limit=10");
     }
 
     #[test]
     fn test_multiple_params_should_concatenate_query_string_values_correctly() {
-        let params = TopGamesParamsBuilder::default()
-                .offset(5)
-                .limit(10)
-                .build();
+        let params = TopGamesParams::new()
+                .with_offset(5)
+                .with_limit(10);
         assert_eq!(params.into_query_string(), "?offset=5&limit=10");
     }
 
     #[test]
     fn test_string_params_should_be_escaped_correctly() {
-        let params = StreamsParamsBuilder::default()
-                .game("StarCraft II: Heart of the Swarm")
-                .build();
+        let params = StreamsParams::new()
+                .with_game("StarCraft II: Heart of the Swarm");
         assert_eq!(params.into_query_string(), "?game=StarCraft+II%3A+Heart+of+the+Swarm");
     }
 
@@ -516,18 +345,16 @@ mod tests {
 
     #[test]
     fn test_strings_in_vec_should_be_concatenated_and_escaped_correctly() {
-        let params = StreamsParamsBuilder::default()
-                .channel("StarCraft I")
-                .channel("StarCraft II")
-                .build();
+        let params = StreamsParams::new()
+                .with_channel("StarCraft I")
+                .with_channel("StarCraft II");
         assert_eq!(params.into_query_string(), "?channel=StarCraft+I%2CStarCraft+II");
     }
 
     #[test]
     fn test_stream_type_should_set_correctly() {
-        let params = StreamsParamsBuilder::default()
-                .stream_type(StreamType::All)
-                .build();
+        let params = StreamsParams::new()
+                .with_stream_type(StreamType::All);
         assert_eq!(params.into_query_string(), "?stream_type=all");
     }
 }

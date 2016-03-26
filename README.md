@@ -22,9 +22,7 @@ twitch-client = { git = "https://github.com/mmitteregger/rust-twitch-client.git"
 The library currently requires Rust nightly.
 Support for the stable release channel is planned for the first release.
 
-## Examples
-
-Getting started:
+## Example
 
 ```rust
 extern crate twitch_client;
@@ -34,33 +32,6 @@ use twitch_client::*;
 fn main() {
     let twitch_client = TwitchClient::new();
     let top_games = twitch_client.top_games(TopGamesParams::default()).unwrap();
-
-    println!("Total games: {}", top_games.total());
-    println!("---");
-    for game_info in top_games.top() {
-        println!("Game: {}, Viewers: {}", game_info.game().name(), game_info.viewers());
-    }
-    println!("---");
-}
-```
-
-Use builders to specify arguments:
-
-```rust
-extern crate twitch_client;
-
-use twitch_client::*;
-
-fn main() {
-    let twitch_client = TwitchClientBuilder::new()
-            .client_id("<YOUR_CLIENT_ID>")
-            .build();
-    let params = TopGamesParamsBuilder::default()
-            .offset(0)
-            .limit(2)
-            .build();
-    let top_games = twitch_client.top_games(params).unwrap();
-    assert_eq!(top_games.top().len(), 2);
 
     println!("Total games: {}", top_games.total());
     println!("---");
