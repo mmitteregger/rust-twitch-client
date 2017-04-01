@@ -29,6 +29,8 @@
 //! ```
 
 #[macro_use] extern crate hyper;
+extern crate hyper_native_tls;
+extern crate native_tls;
 extern crate url;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
@@ -72,10 +74,13 @@ impl TwitchClient {
     ///
     /// It is highly recommended to specify a client id to avoid being rate limited by Twitch
     /// with the `with_client_id` method.
-    pub fn new() -> TwitchClient {
-        TwitchClient {
-            http_client: TwitchHttpClient::new(),
-        }
+    pub fn new() -> Result<TwitchClient> {
+        let http_client = try!(TwitchHttpClient::new());
+
+        let twitch_client = TwitchClient {
+            http_client: http_client,
+        };
+        Ok(twitch_client)
     }
 
     /// Sets the Twitch client id.
@@ -337,7 +342,7 @@ mod tests {
 
     fn create_test_twitch_client() -> TwitchClient {
         let auth = read_auth();
-        let mut twitch_client = TwitchClient::new();
+        let mut twitch_client = TwitchClient::new().unwrap();
 
         match auth {
             Some(auth) => {

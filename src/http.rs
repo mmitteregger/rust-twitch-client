@@ -1,9 +1,11 @@
 use std::io::Read;
 use hyper;
+use hyper::net::HttpsConnector;
 use hyper::Url;
 use hyper::header::{Headers, Accept, qitem};
 use hyper::mime::{Mime, TopLevel, SubLevel};
 use hyper::status::{StatusCode, StatusClass};
+use hyper_native_tls::NativeTlsClient;
 
 use error::{Result, Error};
 
@@ -24,11 +26,16 @@ pub struct TwitchHttpClient {
 
 impl TwitchHttpClient {
 
-    pub fn new() -> TwitchHttpClient {
-        TwitchHttpClient {
+    pub fn new() -> Result<TwitchHttpClient> {
+        let ssl = try!(NativeTlsClient::new());
+        let connector = HttpsConnector::new(ssl);
+        let hyper_client = hyper::Client::with_connector(connector);
+
+        let twitch_http_client = TwitchHttpClient {
             client_id: None,
-            hyper_client: hyper::Client::new()
-        }
+            hyper_client: hyper_client,
+        };
+        Ok(twitch_http_client)
     }
 
     pub fn set_client_id(&mut self, client_id: &str) {

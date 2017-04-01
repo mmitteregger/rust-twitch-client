@@ -1,8 +1,9 @@
 //! Parameters for `TwitchClient` methods.
 
 use std::string::ToString;
+use std::borrow::Cow;
 use url::percent_encoding::utf8_percent_encode;
-use url::percent_encoding::FORM_URLENCODED_ENCODE_SET;
+use url::percent_encoding::QUERY_ENCODE_SET;
 
 use http::IntoQueryString;
 
@@ -297,8 +298,8 @@ fn params_into_query_string(params: Vec<(&str, Option<String>)>) -> String {
     query_string
 }
 
-fn encode(param_value: &str) -> String {
-    utf8_percent_encode(param_value, FORM_URLENCODED_ENCODE_SET).replace("%20", "+")
+fn encode(param_value: &str) -> Cow<str> {
+    utf8_percent_encode(param_value, QUERY_ENCODE_SET).collect()
 }
 
 
@@ -333,7 +334,7 @@ mod tests {
     fn test_string_params_should_be_escaped_correctly() {
         let params = StreamsParams::new()
                 .with_game("StarCraft II: Heart of the Swarm");
-        assert_eq!(params.into_query_string(), "?game=StarCraft+II%3A+Heart+of+the+Swarm");
+        assert_eq!(params.into_query_string(), "?game=StarCraft%20II:%20Heart%20of%20the%20Swarm");
     }
 
     #[test]
@@ -348,7 +349,7 @@ mod tests {
         let params = StreamsParams::new()
                 .with_channel("StarCraft I")
                 .with_channel("StarCraft II");
-        assert_eq!(params.into_query_string(), "?channel=StarCraft+I%2CStarCraft+II");
+        assert_eq!(params.into_query_string(), "?channel=StarCraft%20I,StarCraft%20II");
     }
 
     #[test]

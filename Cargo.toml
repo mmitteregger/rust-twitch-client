@@ -8,10 +8,12 @@ keywords = ["twitch"]
 
 [dependencies]
 # Http client for Twitch REST API
-hyper = "0.7"
+hyper = "0.10"
+hyper-native-tls = "0.2"
+native-tls = "0.1"
 # Escaping of query parameters
-url = "0.5"
+url = "1.4"
 # JSON serialization and deserialization
-serde = "0.8"
-serde_json = "0.8"
-serde_derive = "0.8"
+serde = "0.9"
+serde_json = "0.9"
+serde_derive = "0.9"

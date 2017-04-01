@@ -6,6 +6,8 @@ use std::io::Error as IoError;
 use hyper::Url;
 use hyper::client::response::Response;
 use hyper::error::Error as HyperError;
+use hyper_native_tls::ServerError as HyperNativeTlsServerError;
+use native_tls::Error as NativeTlsError;
 use serde_json::error::Error as JsonError;
 
 /// Result type from methods that can have Twitch Client Errors.
@@ -16,6 +18,7 @@ use self::Error::{
     Unauthorized,
     Io,
     Hyper,
+    Tls,
     Deserialization,
 };
 
@@ -37,6 +40,8 @@ pub enum Error {
     Io(IoError),
     /// An `hyper::error::Error` that occurred while trying to use the hyper library.
     Hyper(HyperError),
+    /// An `hyper::error::Error` that occurred while trying to use the hyper library.
+    Tls(NativeTlsError),
     /// An `serde_json::error::Error` that occurred while trying to deserialize a json response string.
     Deserialization(JsonError),
 }
@@ -54,6 +59,7 @@ impl StdError for Error {
             Unauthorized(ref _url) => "Tried to access an secured resource prior to authentication",
             Io(ref e) => e.description(),
             Hyper(ref e) => e.description(),
+            Tls(ref e) => e.description(),
             Deserialization(ref e) => e.description(),
         }
     }
@@ -80,6 +86,21 @@ impl From<HyperError> for Error {
             HyperError::Io(e) => Io(e),
             _ => Hyper(err)
         }
+    }
+}
+
+impl From<HyperNativeTlsServerError> for Error {
+    fn from(err: HyperNativeTlsServerError) -> Error {
+        match err {
+            HyperNativeTlsServerError::Io(e) => Io(e),
+            HyperNativeTlsServerError::Tls(e) => Tls(e),
+        }
+    }
+}
+
+impl From<NativeTlsError> for Error {
+    fn from(err: NativeTlsError) -> Error {
+        Tls(err)
     }
 }
 
