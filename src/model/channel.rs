@@ -4,9 +4,6 @@
 //! Channels have a stream, can run commercials, store videos, display information and status,
 //! and have a customized page including banners and backgrounds.
 
-use std::collections::BTreeMap;
-
-pub use model::TwitchLinks;
 pub use model::UrlString;
 pub use model::DateString;
 pub use model::LocaleString;
@@ -55,8 +52,6 @@ pub use model::LocaleString;
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Channel {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     #[serde(rename="_id")]
     id: u64,
     name: String,
@@ -82,73 +77,7 @@ pub struct Channel {
 }
 
 
-impl TwitchLinks for Channel {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
 impl Channel {
-    /// Link with key "self".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel"
-    pub fn link_self(&self) -> &String {
-        self.get_expected_link("self")
-    }
-    /// Link with key "follows".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel/follows"
-    pub fn link_follows(&self) -> &String {
-        self.get_expected_link("follows")
-    }
-    /// Link with key "commercial".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel/commercial"
-    pub fn link_commercial(&self) -> &String {
-        self.get_expected_link("commercial")
-    }
-    /// Link with key "stream_key".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel/stream_key"
-    pub fn link_stream_key(&self) -> &String {
-        self.get_expected_link("stream_key")
-    }
-    /// Link with key "chat".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/chat/test_channel"
-    pub fn link_chat(&self) -> &String {
-        self.get_expected_link("chat")
-    }
-    /// Link with key "features".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel/features"
-    pub fn link_features(&self) -> &String {
-        self.get_expected_link("features")
-    }
-    /// Link with key "subscriptions".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel/subscriptions"
-    pub fn link_subscriptions(&self) -> &String {
-        self.get_expected_link("subscriptions")
-    }
-    /// Link with key "editors".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel/editors"
-    pub fn link_editors(&self) -> &String {
-        self.get_expected_link("editors")
-    }
-    /// Link with key "teams".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel/teams"
-    pub fn link_teams(&self) -> &String {
-        self.get_expected_link("teams")
-    }
-    /// Link with key "videos".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel/videos"
-    pub fn link_videos(&self) -> &String {
-        self.get_expected_link("videos")
-    }
     /// Example value: 12345
     pub fn id(&self) -> u64 {
         self.id

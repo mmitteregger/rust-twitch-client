@@ -4,7 +4,7 @@ use hyper::net::HttpsConnector;
 use hyper::Url;
 use hyper::header::{Headers, Accept, qitem};
 use hyper::mime::{Mime, TopLevel, SubLevel};
-use hyper::status::{StatusCode, StatusClass};
+use hyper::status::StatusClass;
 use hyper_native_tls::NativeTlsClient;
 
 use error::{Result, Error};
@@ -72,25 +72,11 @@ impl TwitchHttpClient {
 
         match response.status.class() {
             StatusClass::Success => {
-                if response.status == StatusCode::Ok {
-                    let mut response_body = String::new();
-                    try!(response.read_to_string(&mut response_body));
-                    Ok(response_body)
-                } else {
-                    panic!("Unhandled success response: {:#?}", response);
-                }
+                let mut response_body = String::new();
+                try!(response.read_to_string(&mut response_body));
+                Ok(response_body)
             }
-            StatusClass::ClientError => {
-                if response.status == StatusCode::Unauthorized {
-                    Err(Error::Unauthorized(url.clone()))
-                } else {
-                    panic!("Unhandled client error response: {:#?}", response);
-                }
-            }
-            StatusClass::ServerError => {
-                Err(Error::Twitch(response))
-            }
-            _ => panic!("Unhandled response status: {}", response.status)
+            _ => Err(Error::Http(response))
         }
     }
 

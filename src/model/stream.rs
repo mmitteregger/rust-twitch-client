@@ -3,9 +3,6 @@
 //! Streams are video broadcasts that are currently live.
 //! They have a broadcaster and are part of a channel.
 
-use std::collections::BTreeMap;
-
-pub use model::TwitchLinks;
 pub use model::DateString;
 pub use model::UrlString;
 pub use model::image::ImageLinks;
@@ -35,8 +32,6 @@ pub use model::channel::Channel;
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Streams {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     #[serde(rename="_total")]
     total: u32,
     streams: Vec<Stream>,
@@ -61,8 +56,6 @@ pub struct Streams {
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FeaturedStreams {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     featured: Vec<FeaturedStream>,
 }
 
@@ -95,8 +88,6 @@ pub struct FeaturedStreams {
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ChannelStream {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     stream: Option<Stream>,
 }
 
@@ -115,8 +106,6 @@ pub struct ChannelStream {
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct StreamsSummary {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     viewers: u32,
     channels: u32,
 }
@@ -177,8 +166,6 @@ pub struct FeaturedStream {
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Stream {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     #[serde(rename="_id")]
     id: u64,
     game: Option<String>,
@@ -193,43 +180,7 @@ pub struct Stream {
 }
 
 
-impl TwitchLinks for Streams {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
 impl Streams {
-    /// Link with key "self".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams?channel=test_channel%2Ctest_channel2&game=StarCraft+II%3A+Heart+of+the+Swarm&limit=100&offset=0"
-    pub fn link_self(&self) -> &String {
-        self.get_expected_link("self")
-    }
-    /// Link with key "next".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams?channel=test_channel%2Ctest_channel2&game=StarCraft+II%3A+Heart+of+the+Swarm&limit=100&offset=100"
-    pub fn link_next(&self) -> &String {
-        self.get_expected_link("next")
-    }
-    /// Link with key "featured".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams/featured"
-    pub fn link_featured(&self) -> &String {
-        self.get_expected_link("featured")
-    }
-    /// Link with key "summary".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams/summary"
-    pub fn link_summary(&self) -> &String {
-        self.get_expected_link("summary")
-    }
-    /// Link with key "followed".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams/followed"
-    pub fn link_followed(&self) -> &String {
-        self.get_expected_link("followed")
-    }
     /// Example value: 12345
     pub fn total(&self) -> u32 {
         self.total
@@ -240,69 +191,21 @@ impl Streams {
     }
 }
 
-impl TwitchLinks for FeaturedStreams {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
 impl FeaturedStreams {
-    /// Link with key "self".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams/featured?limit=25&offset=0"
-    pub fn link_self(&self) -> &String {
-        self.get_expected_link("self")
-    }
-    /// Link with key "next".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams/featured?limit=25&offset=25"
-    pub fn link_next(&self) -> &String {
-        self.get_expected_link("next")
-    }
     /// Example value: See `FeaturedStream` type.
     pub fn featured(&self) -> &Vec<FeaturedStream> {
         &self.featured
     }
 }
 
-impl TwitchLinks for ChannelStream {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
 impl ChannelStream {
-    /// Link with key "self".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams/test_channel"
-    pub fn link_self(&self) -> &String {
-        self.get_expected_link("self")
-    }
-    /// Link with key "channel".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_channel"
-    pub fn link_channel(&self) -> &String {
-        self.get_expected_link("channel")
-    }
     /// Example value: See `Stream` type.
     pub fn stream(&self) -> &Option<Stream> {
         &self.stream
     }
 }
 
-impl TwitchLinks for StreamsSummary {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
 impl StreamsSummary {
-    /// Link with key "self".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams/summary"
-    pub fn link_self(&self) -> &String {
-        self.get_expected_link("self")
-    }
     /// Example value: 194774
     pub fn viewers(&self) -> u32 {
         self.viewers
@@ -344,19 +247,7 @@ impl FeaturedStream {
     }
 }
 
-impl TwitchLinks for Stream {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
 impl Stream {
-    /// Link with key "self".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams/test_channel"
-    pub fn link_self(&self) -> &String {
-        self.get_expected_link("self")
-    }
     /// Example value: 4989654544
     pub fn id(&self) -> u64 {
         self.id

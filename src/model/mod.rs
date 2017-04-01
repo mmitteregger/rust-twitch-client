@@ -1,7 +1,5 @@
 //! Twitch return types.
 
-use std::collections::BTreeMap;
-
 pub mod image;
 pub mod game;
 pub mod ingest;
@@ -25,27 +23,3 @@ pub type DateString = String;
 /// Is subject to be changed to a real locale type in the future.
 pub type LocaleString = String;
 
-
-/// A Twitch Model that contains http links to the called resource and other related Twitch resources.
-pub trait TwitchLinks {
-
-    /// Returns a map with all http links of the Twitch result.
-    fn links(&self) -> &BTreeMap<String, String>;
-
-    /// Returns the http link corresponding to the given key.
-    ///
-    /// The key is expected to exist in the `links()` map.
-    /// The safe way to return a link is to use the `BTreeMap.get(key)` method.
-    ///
-    /// # Panics
-    ///
-    /// Panics if the given key does not exist.
-    fn get_expected_link(&self, link_key: &str) -> &String {
-        match self.links().get(link_key) {
-            Some(link) => link,
-            None => {
-                panic!("Expected links to contain {} but got: {:?}", link_key, self.links());
-            }
-        }
-    }
-}

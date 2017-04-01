@@ -3,9 +3,6 @@
 //! Games are categories (e.g. League of Legends, Diablo 3) used by streams and channels.
 //! Games can be searched for by query.
 
-use std::collections::BTreeMap;
-
-pub use model::TwitchLinks;
 pub use model::image::ImageLinks;
 
 
@@ -29,8 +26,6 @@ pub use model::image::ImageLinks;
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TopGames {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     #[serde(rename="_total")]
     total: u32,
     top: Vec<GameInfo>,
@@ -82,8 +77,6 @@ pub struct GameInfo {
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Game {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     #[serde(rename="_id")]
     id: u64,
     giantbomb_id: u64,
@@ -95,25 +88,7 @@ pub struct Game {
 }
 
 
-impl TwitchLinks for TopGames {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
 impl TopGames {
-    /// Link with key "self".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/games/top?limit=10&offset=0"
-    pub fn link_self(&self) -> &String {
-        self.get_expected_link("self")
-    }
-    /// Link with key "next".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/games/top?limit=10&offset=10"
-    pub fn link_next(&self) -> &String {
-        self.get_expected_link("next")
-    }
     /// Example value: 322
     pub fn total(&self) -> u32 {
         self.total
@@ -136,12 +111,6 @@ impl GameInfo {
     /// Example value: See `Game` type.
     pub fn game(&self) -> &Game {
         &self.game
-    }
-}
-
-impl TwitchLinks for Game {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
     }
 }
 

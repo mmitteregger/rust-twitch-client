@@ -3,7 +3,6 @@
 use std::error::Error as StdError;
 use std::fmt;
 use std::io::Error as IoError;
-use hyper::Url;
 use hyper::client::response::Response;
 use hyper::error::Error as HyperError;
 use hyper_native_tls::ServerError as HyperNativeTlsServerError;
@@ -14,8 +13,7 @@ use serde_json::error::Error as JsonError;
 pub type Result<T> = ::std::result::Result<T, Error>;
 
 use self::Error::{
-    Twitch,
-    Unauthorized,
+    Http,
     Io,
     Hyper,
     Tls,
@@ -32,10 +30,8 @@ use self::Error::{
 /// and it is not recommended to exhaustively match against it.
 #[derive(Debug)]
 pub enum Error {
-    /// An twitch server error that is indicated by the response status 5xx (Server Error)
-    Twitch(Response),
-    /// Tried to access an secured resource prior to authentication
-    Unauthorized(Url),
+    /// An http error while communicating with the twitch server
+    Http(Response),
     /// An `io::Error` that occurred while trying to read or write to a network stream.
     Io(IoError),
     /// An `hyper::error::Error` that occurred while trying to use the hyper library.
@@ -55,8 +51,7 @@ impl fmt::Display for Error {
 impl StdError for Error {
     fn description(&self) -> &str {
         match *self {
-            Twitch(ref _response) => "An twitch server error that is indicated by the response status 5xx (Server Error)",
-            Unauthorized(ref _url) => "Tried to access an secured resource prior to authentication",
+            Http(ref _response) => "An http error while communicating with the twitch server",
             Io(ref e) => e.description(),
             Hyper(ref e) => e.description(),
             Tls(ref e) => e.description(),

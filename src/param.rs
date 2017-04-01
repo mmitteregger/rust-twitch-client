@@ -15,8 +15,8 @@ use http::IntoQueryString;
 /// ```
 /// use twitch_client::param::TopGamesParams;
 ///
-/// let default_params = TopGamesParams::default();
-/// let custom_params = TopGamesParams::new()
+/// let _default_params = TopGamesParams::default();
+/// let _custom_params = TopGamesParams::new()
 ///         .with_offset(40)
 ///         .with_limit(20);
 /// ```
@@ -83,8 +83,8 @@ impl StreamType {
 /// use twitch_client::param::StreamsParams;
 /// use twitch_client::param::StreamType;
 ///
-/// let default_params = StreamsParams::default();
-/// let custom_params = StreamsParams::new()
+/// let _default_params = StreamsParams::default();
+/// let _custom_params = StreamsParams::new()
 ///         .with_offset(40)
 ///         .with_limit(20)
 ///         .with_game("StarCraft II: Heart of the Swarm")
@@ -190,8 +190,8 @@ impl IntoQueryString for StreamsParams {
 /// ```
 /// use twitch_client::param::FeaturedStreamsParams;
 ///
-/// let default_params = FeaturedStreamsParams::default();
-/// let custom_params = FeaturedStreamsParams::new()
+/// let _default_params = FeaturedStreamsParams::default();
+/// let _custom_params = FeaturedStreamsParams::new()
 ///         .with_offset(5)
 ///         .with_limit(5);
 /// ```
@@ -240,8 +240,8 @@ impl IntoQueryString for FeaturedStreamsParams {
 /// ```
 /// use twitch_client::param::StreamsSummaryParams;
 ///
-/// let default_params = StreamsSummaryParams::default();
-/// let custom_params = StreamsSummaryParams::new()
+/// let _default_params = StreamsSummaryParams::default();
+/// let _custom_params = StreamsSummaryParams::new()
 ///         .with_game("StarCraft II: Heart of the Swarm");
 /// ```
 #[derive(Default, Debug, Clone, Hash, Eq, PartialEq)]

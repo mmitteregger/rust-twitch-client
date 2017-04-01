@@ -4,10 +4,6 @@
 //! By directing an RTMP stream with your `stream_key` injected into the `url_template`,
 //! you will broadcast your content live on Twitch.
 
-use std::collections::BTreeMap;
-
-pub use model::TwitchLinks;
-
 /// List of ingests.
 ///
 /// # Example in JSON
@@ -26,8 +22,6 @@ pub use model::TwitchLinks;
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Ingests {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     ingests: Vec<Ingest>,
 }
 
@@ -55,19 +49,7 @@ pub struct Ingest {
 }
 
 
-impl TwitchLinks for Ingests {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
 impl Ingests {
-    /// Link with key "self".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/ingests"
-    pub fn link_self(&self) -> &String {
-        self.get_expected_link("self")
-    }
     /// Example value: See `Ingest` type.
     pub fn ingests(&self) -> &Vec<Ingest> {
         &self.ingests

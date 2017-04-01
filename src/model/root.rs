@@ -1,8 +1,5 @@
 //! Top level Twitch models and authorization status.
 
-use std::collections::BTreeMap;
-
-pub use model::TwitchLinks;
 pub use model::DateString;
 
 /// Basic information about the API and authentication status.
@@ -29,8 +26,6 @@ pub use model::DateString;
 /// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BasicInfo {
-    #[serde(rename="_links")]
-    links: BTreeMap<String, String>,
     token: Token,
 }
 
@@ -73,67 +68,7 @@ pub struct Authorization {
 }
 
 
-impl TwitchLinks for BasicInfo {
-    fn links(&self) -> &BTreeMap<String, String> {
-        &self.links
-    }
-}
-
 impl BasicInfo {
-    /// Link with key "user".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/user"
-    pub fn link_user(&self) -> &String {
-        self.get_expected_link("user")
-    }
-    /// Link with key "channel".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channel"
-    pub fn link_channel(&self) -> &String {
-        self.get_expected_link("channel")
-    }
-    /// Link with key "search".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/search"
-    pub fn link_search(&self) -> &String {
-        self.get_expected_link("search")
-    }
-    /// Link with key "streams".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/streams"
-    pub fn link_streams(&self) -> &String {
-        self.get_expected_link("streams")
-    }
-    /// Link with key "ingests".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/ingests"
-    pub fn link_ingests(&self) -> &String {
-        self.get_expected_link("ingests")
-    }
-    /// Link with key "teams".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/teams"
-    pub fn link_teams(&self) -> &String {
-        self.get_expected_link("teams")
-    }
-    /// Link with key "users".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/users/test_user1"
-    pub fn link_users(&self) -> Option<&String> {
-        self.links.get("users")
-    }
-    /// Link with key "channels".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/channels/test_user1"
-    pub fn link_channels(&self) -> Option<&String> {
-        self.links.get("channels")
-    }
-    /// Link with key "chat".
-    ///
-    /// Example value: "https://api.twitch.tv/kraken/chat/test_user1"
-    pub fn link_chat(&self) -> Option<&String> {
-        self.links.get("chat")
-    }
     /// Example value: See `Token` type.
     pub fn token(&self) -> &Token {
         &self.token
