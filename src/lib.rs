@@ -16,7 +16,7 @@
 //! use twitch_client::*;
 //!
 //! fn main() {
-//!     let twitch_client = TwitchClient::new().unwrap();
+//!     let twitch_client = TwitchClient::new().unwrap().with_client_id("<INSERT_YOU_CLIENT_ID_HERE>");
 //!
 //!     match twitch_client.top_games(TopGamesParams::default()) {
 //!         Ok(top_games) => {
@@ -64,7 +64,7 @@ use error::Result;
 /// ```
 /// use twitch_client::*;
 ///
-/// let twitch_client = TwitchClient::new().unwrap();
+/// let twitch_client = TwitchClient::new().unwrap().with_client_id("<INSERT_YOU_CLIENT_ID_HERE>");
 ///
 /// match twitch_client.top_games(TopGamesParams::default()) {
 ///     Ok(top_games) => println!("Total games: {}", top_games.total()),
@@ -307,27 +307,21 @@ mod tests {
 
     fn create_test_twitch_client() -> TwitchClient {
         let auth = read_auth();
-        let mut twitch_client = TwitchClient::new().unwrap();
-
-        match auth {
-            Some(auth) => {
-                twitch_client = twitch_client.with_client_id(&auth.client_id);
-            },
-            None => {},
-        }
-
-        twitch_client
+        TwitchClient::new().unwrap().with_client_id(&auth.client_id)
     }
 
-    fn read_auth() -> Option<Auth> {
+    fn read_auth() -> Auth {
         let mut auth_file = match File::open("twitch_auth.json") {
             Ok(file) => file,
-            Err(_) => return None,
+            Err(_) => {
+                panic!("File twitch_auth.json required at the crate root directory \
+                        for the Twitch Client-ID. Have a look at twitch_auth_template.json");
+            },
         };
         let mut auth_string = String::new();
         auth_file.read_to_string(&mut auth_string).unwrap();
         let auth: Auth = serde_json::from_str(&auth_string).unwrap();
-        Some(auth)
+        auth
     }
 
     #[derive(Deserialize, Debug)]
