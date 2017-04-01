@@ -1,6 +1,4 @@
 #![doc(html_root_url = "http://mmitteregger.github.io/rust-twitch-client")]
-#![feature(custom_derive, plugin)]
-#![plugin(serde_macros)]
 #![warn(missing_docs)]
 #![cfg_attr(test, deny(missing_docs))]
 #![cfg_attr(test, deny(warnings))]
@@ -33,6 +31,7 @@
 #[macro_use] extern crate hyper;
 extern crate url;
 extern crate serde;
+#[macro_use] extern crate serde_derive;
 extern crate serde_json;
 
 pub mod model;
