@@ -16,11 +16,10 @@ the dependency has to be added using the git url.
 
 ```INI
 [dependencies]
-twitch-client = { git = "https://github.com/mmitteregger/rust-twitch-client.git" }
+twitch-client = { git = "https://github.com/mmitteregger/rust-twitch-client.git", rev = "..." }
 ```
 
-The library currently requires Rust nightly.
-Support for the stable release channel is planned for the first release.
+It is highly recommended to specify a git revision as no guarantees about API stability are made yet.
 
 ## Example
 
@@ -30,7 +29,7 @@ extern crate twitch_client;
 use twitch_client::*;
 
 fn main() {
-    let twitch_client = TwitchClient::new();
+    let twitch_client = TwitchClient::new().unwrap().with_client_id("<INSERT_YOU_CLIENT_ID_HERE>");
     let top_games = twitch_client.top_games(TopGamesParams::default()).unwrap();
 
     println!("Total games: {}", top_games.total());
