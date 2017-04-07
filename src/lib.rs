@@ -194,6 +194,7 @@ impl TwitchClient {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::env;
     use std::fs::File;
     use std::io::Read;
     use serde_json;
@@ -311,11 +312,32 @@ mod tests {
     }
 
     fn read_auth() -> Auth {
+        match env::var("TWITCH_CLIENT_ID") {
+            Ok(twitch_client_id) => {
+                return Auth {
+                    name: "Rust Twitch Client".to_owned(),
+                    client_id: twitch_client_id,
+                    redirect_uri: None,
+                    client_secret: None,
+                };
+            },
+            Err(var_error) => {
+                match var_error {
+                    env::VarError::NotPresent => {},
+                    env::VarError::NotUnicode(var) => {
+                        panic!("environment variable TWITCH_CLIENT_ID \
+                                did not contain valid unicode data: {:?}", var)
+                    },
+                }
+            }
+        }
+
         let mut auth_file = match File::open("twitch_auth.json") {
             Ok(file) => file,
             Err(_) => {
-                panic!("File twitch_auth.json required at the crate root directory \
-                        for the Twitch Client-ID. Have a look at twitch_auth_template.json");
+                panic!("Either the environment variable TWITCH_CLIENT_ID needs to be set \
+                        or a file named twitch_auth.json is required at the crate root directory. \
+                        Have a look at twitch_auth_template.json");
             },
         };
         let mut auth_string = String::new();
