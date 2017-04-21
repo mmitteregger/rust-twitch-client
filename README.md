@@ -29,7 +29,7 @@ extern crate twitch_client;
 use twitch_client::*;
 
 fn main() {
-    let twitch_client = TwitchClient::new().unwrap().with_client_id("<INSERT_YOU_CLIENT_ID_HERE>");
+    let twitch_client = TwitchClient::new("<YOUR_TWITCH_CLIENT_ID>").unwrap();
     let top_games = twitch_client.top_games(TopGamesParams::default()).unwrap();
 
     println!("Total games: {}", top_games.total());

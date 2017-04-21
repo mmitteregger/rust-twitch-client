@@ -20,30 +20,29 @@ pub trait IntoQueryString {
 }
 
 pub struct TwitchHttpClient {
-    client_id: Option<String>,
+    client_id: String,
     hyper_client: hyper::Client,
 }
 
 impl TwitchHttpClient {
 
-    pub fn new() -> Result<TwitchHttpClient> {
+    pub fn new<S: Into<String>>(client_id: S) -> Result<TwitchHttpClient> {
         let ssl = try!(NativeTlsClient::new());
         let connector = HttpsConnector::new(ssl);
         let hyper_client = hyper::Client::with_connector(connector);
 
         let twitch_http_client = TwitchHttpClient {
-            client_id: None,
+            client_id: client_id.into(),
             hyper_client: hyper_client,
         };
         Ok(twitch_http_client)
     }
 
-    pub fn set_client_id(&mut self, client_id: &str) {
-        self.client_id = Some(client_id.to_owned());
-    }
-
-    pub fn set_hyper_client(&mut self, hyper_client: hyper::Client) {
-        self.hyper_client = hyper_client;
+    pub fn with_hyper_client<S: Into<String>>(client_id: S, hyper_client: hyper::Client) -> TwitchHttpClient {
+        TwitchHttpClient {
+            client_id: client_id.into(),
+            hyper_client: hyper_client,
+        }
     }
 
     pub fn get_content(&self, relative_url: &str) -> Result<String> {
@@ -86,10 +85,7 @@ impl TwitchHttpClient {
         headers.set(Accept(vec![
             qitem(Mime(TopLevel::Application, SubLevel::Ext("vnd.twitchtv.v3+json".to_owned()), vec![])),
         ]));
-        match self.client_id {
-            Some(ref client_id) => headers.set(ClientId(client_id.to_owned())),
-            None => {},
-        };
+        headers.set(ClientId(self.client_id.clone()));
 
         headers
     }

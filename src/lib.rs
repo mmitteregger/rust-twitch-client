@@ -5,10 +5,10 @@
 
 //! # Overview
 //!
-//! Rust Twitch Client is a library for the [Twitch REST API](https://github.com/justintv/Twitch-API) written in Rust!
+//! Rust Twitch Client is a library for the [Twitch REST API] written in Rust!
 //!
-//! It uses [hyper](https://github.com/hyperium/hyper) as http client
-//! and [serde](https://github.com/serde-rs/serde) for the serialization and deserialization of the REST entities.
+//! It uses [hyper] with [native_tls] as https client
+//! and [serde] for the serialization and deserialization of the REST requests and responses.
 //!
 //! # Examples
 //!
@@ -16,7 +16,7 @@
 //! use twitch_client::*;
 //!
 //! fn main() {
-//!     let twitch_client = TwitchClient::new().unwrap().with_client_id("<INSERT_YOU_CLIENT_ID_HERE>");
+//!     let twitch_client = TwitchClient::new("<YOUR_TWITCH_CLIENT_ID>").unwrap();
 //!
 //!     match twitch_client.top_games(TopGamesParams::default()) {
 //!         Ok(top_games) => {
@@ -31,6 +31,11 @@
 //!     }
 //! }
 //! ```
+//!
+//! [Twitch REST API]: https://dev.twitch.tv/docs
+//! [hyper]: https://hyper.rs/
+//! [native_tls]: https://docs.rs/crate/native-tls
+//! [serde]: https://serde.rs/
 
 #[macro_use] extern crate hyper;
 extern crate hyper_native_tls;
@@ -49,13 +54,12 @@ pub use param::*;
 use http::TwitchHttpClient;
 use error::Result;
 
-/// Readonly client for the [Twitch API](https://github.com/justintv/twitch-api).
+/// Readonly client for the [Twitch REST API].
 ///
-/// Currently Twitch API version 3 is used.
+/// Currently [Twitch API version 3] is used.
 ///
 /// By using the Twitch Client you agree to follow the
-/// [Twitch API Terms of Service](https://www.twitch.tv/user/legal?page=api_terms_of_service)
-/// and the [Twitch Terms of Service](https://www.twitch.tv/p/api_terms_of_service).
+/// [Twitch Developer Services Agreement] and the [Twitch Terms of Service].
 /// This library is in no way affiliated with, authorized, maintained, sponsored
 /// or endorsed by Twitch or any of its affiliates or subsidiaries
 ///
@@ -64,25 +68,33 @@ use error::Result;
 /// ```
 /// use twitch_client::*;
 ///
-/// let twitch_client = TwitchClient::new().unwrap().with_client_id("<INSERT_YOU_CLIENT_ID_HERE>");
+/// let twitch_client = TwitchClient::new("<YOUR_TWITCH_CLIENT_ID>").unwrap();
 ///
 /// match twitch_client.top_games(TopGamesParams::default()) {
 ///     Ok(top_games) => println!("Total games: {}", top_games.total()),
 ///     Err(err) => println!("Failed to retrieve top games: {}", err),
 /// }
 /// ```
+///
+/// [Twitch REST API]: https://dev.twitch.tv/docs
+/// [Twitch API version 3]: https://dev.twitch.tv/docs/v3
+/// [Twitch Developer Services Agreement]: https://www.twitch.tv/p/developer-agreement
+/// [Twitch Terms of Service]: https://help.twitch.tv/customer/portal/articles/735191-terms-of-service
 pub struct TwitchClient {
     http_client: TwitchHttpClient,
 }
 
 impl TwitchClient {
 
-    /// Constructs a new instance without client id and with a default hyper client.
+    /// Constructs a new client instance with a new hyper https client using native tls.
     ///
-    /// It is highly recommended to specify a client id to avoid being rate limited by Twitch
-    /// with the `with_client_id` method.
-    pub fn new() -> Result<TwitchClient> {
-        let http_client = try!(TwitchHttpClient::new());
+    /// Since [2016-08-06] a Twitch Client ID is required.
+    /// Instructions for obtaining it can be found at the [Twitch API Documentation].
+    ///
+    /// [2016-08-06]: https://blog.twitch.tv/client-id-required-for-kraken-api-calls-afbb8e95f843
+    /// [Twitch API Documentation]: https://dev.twitch.tv/docs/v5/guides/using-the-twitch-api/#getting-a-client-id
+    pub fn new<S: Into<String>>(client_id: S) -> Result<TwitchClient> {
+        let http_client = try!(TwitchHttpClient::new(client_id));
 
         let twitch_client = TwitchClient {
             http_client: http_client,
@@ -90,23 +102,24 @@ impl TwitchClient {
         Ok(twitch_client)
     }
 
-    /// Sets the Twitch client id.
+    /// Constructs a new client instance using the provided hyper client.
     ///
-    /// See [https://github.com/justintv/twitch-api#rate-limits](https://github.com/justintv/twitch-api#rate-limits)
-    /// for more information.
-    pub fn with_client_id(mut self, client_id: &str) -> TwitchClient {
-        self.http_client.set_client_id(client_id);
-        self
+    /// Note that the provided hyper client needs to use a tls connection.
+    ///
+    /// Since [2016-08-06] a Twitch Client ID is required.
+    /// Instructions for obtaining it can be found at the [Twitch API Documentation].
+    ///
+    /// [2016-08-06]: https://blog.twitch.tv/client-id-required-for-kraken-api-calls-afbb8e95f843
+    /// [Twitch API Documentation]: https://dev.twitch.tv/docs/v5/guides/using-the-twitch-api/#getting-a-client-id
+    pub fn with_hyper_client<S: Into<String>>(client_id: S, hyper_client: hyper::Client) -> TwitchClient {
+        let http_client = TwitchHttpClient::with_hyper_client(client_id, hyper_client);
+
+        let twitch_client = TwitchClient {
+            http_client: http_client,
+        };
+        twitch_client
     }
 
-    /// Sets a custom configured hyper client.
-    ///
-    /// See [hyper::client::Client](http://hyper.rs/hyper/hyper/client/struct.Client.html)
-    /// for more information.
-    pub fn with_hyper_client(mut self, hyper_client: hyper::Client) -> TwitchClient {
-        self.http_client.set_hyper_client(hyper_client);
-        self
-    }
 }
 
 
@@ -308,7 +321,7 @@ mod tests {
 
     fn create_test_twitch_client() -> TwitchClient {
         let auth = read_auth();
-        TwitchClient::new().unwrap().with_client_id(&auth.client_id)
+        TwitchClient::new(auth.client_id).unwrap()
     }
 
     fn read_auth() -> Auth {
