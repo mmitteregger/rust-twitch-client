@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Authorization","Authorization information."],["BasicInfo","Basic information about the API and authentication status."],["Token","Authentication token."]]});

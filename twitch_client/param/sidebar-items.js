@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["StreamType","`StreamType` for `StreamsParams` to only show streams from a certain type."]],"struct":[["FeaturedStreamsParams","Parameters for the featured streams."],["StreamsParams","Parameters for the streams."],["StreamsSummaryParams","Parameters for the streams summary."],["TopGamesParams","Parameters for the top games."]]});

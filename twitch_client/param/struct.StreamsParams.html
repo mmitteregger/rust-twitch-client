@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `StreamsParams` struct in crate `twitch_client`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, StreamsParams">
+
+    <title>twitch_client::param::StreamsParams - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>twitch_client</a>::<wbr><a href='index.html'>param</a></p><script>window.sidebarCurrent = {name: 'StreamsParams', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>twitch_client</a>::<wbr><a href='index.html'>param</a>::<wbr><a class="struct" href=''>StreamsParams</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/twitch_client/param.rs.html#94-101' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct StreamsParams { /* fields omitted */ }</pre><div class='docblock'><p>Parameters for the streams.</p>
+
+<h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">twitch_client</span>::<span class="ident">param</span>::<span class="ident">StreamsParams</span>;
+<span class="kw">use</span> <span class="ident">twitch_client</span>::<span class="ident">param</span>::<span class="ident">StreamType</span>;
+
+<span class="kw">let</span> <span class="ident">_default_params</span> <span class="op">=</span> <span class="ident">StreamsParams</span>::<span class="ident">default</span>();
+<span class="kw">let</span> <span class="ident">_custom_params</span> <span class="op">=</span> <span class="ident">StreamsParams</span>::<span class="ident">new</span>()
+        .<span class="ident">with_offset</span>(<span class="number">40</span>)
+        .<span class="ident">with_limit</span>(<span class="number">20</span>)
+        .<span class="ident">with_game</span>(<span class="string">&quot;StarCraft II: Heart of the Swarm&quot;</span>)
+        .<span class="ident">with_stream_type</span>(<span class="ident">StreamType</span>::<span class="ident">Live</span>);</pre>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/twitch_client/param.rs.html#103-161' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class="method"><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Constructs a new instance.</p>
+
+<p>Synonym for StreamsParams::default() but preferred if custom parameters are set.</p>
+</div><h4 id='method.with_game' class="method"><span id='with_game.v' class='invisible'><code>fn <a href='#method.with_game' class='fnname'>with_game</a>(self, game: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Streams categorized under game.</p>
+
+<p>Twitch defaults to all games if not set.</p>
+</div><h4 id='method.with_channel' class="method"><span id='with_channel.v' class='invisible'><code>fn <a href='#method.with_channel' class='fnname'>with_channel</a>(self, channel: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Streams from a channel.
+Can be called multiple times to specify a list of channels.</p>
+
+<p>Twitch defaults to all channels if not set.</p>
+</div><h4 id='method.with_channels' class="method"><span id='with_channels.v' class='invisible'><code>fn <a href='#method.with_channels' class='fnname'>with_channels</a>(self, channels: <a class="struct" href="https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html" title="struct collections::vec::Vec">Vec</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/collections/string/struct.String.html" title="struct collections::string::String">String</a>&gt;) -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Streams from a list of channels.
+Can be called with an empty Vec to clear the list and use the default again.</p>
+
+<p>Twitch defaults to all channels if not set or empty.</p>
+</div><h4 id='method.with_offset' class="method"><span id='with_offset.v' class='invisible'><code>fn <a href='#method.with_offset' class='fnname'>with_offset</a>(self, offset: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Offset for pagination.</p>
+
+<p>Twitch defaults to 0 if not set.</p>
+</div><h4 id='method.with_limit' class="method"><span id='with_limit.v' class='invisible'><code>fn <a href='#method.with_limit' class='fnname'>with_limit</a>(self, limit: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>) -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Maximum number of objects in array.</p>
+
+<p>Twitch defaults to 25 if not set. Maximum is 100.</p>
+</div><h4 id='method.with_client_id' class="method"><span id='with_client_id.v' class='invisible'><code>fn <a href='#method.with_client_id' class='fnname'>with_client_id</a>(self, client_id: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Only shows streams from applications of <code>client_id</code>.</p>
+
+<p>Twitch defaults to all applications if not set.</p>
+</div><h4 id='method.with_stream_type' class="method"><span id='with_stream_type.v' class='invisible'><code>fn <a href='#method.with_stream_type' class='fnname'>with_stream_type</a>(self, stream_type: <a class="enum" href="../../twitch_client/param/enum.StreamType.html" title="enum twitch_client::param::StreamType">StreamType</a>) -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Only shows streams from a certain type.</p>
+
+<p>Twitch defaults to all if not set.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a> for <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/twitch_client/param.rs.html#93' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.default' class="method"><span id='default.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Returns the &quot;default value&quot; for a type. <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/twitch_client/param.rs.html#93' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/twitch_client/param.rs.html#93' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html" title="trait core::hash::Hash">Hash</a> for <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/twitch_client/param.rs.html#93' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.hash' class="method"><span id='hash.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash' class='fnname'>hash</a>&lt;__H:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html" title="trait core::hash::Hasher">Hasher</a>&gt;(&amp;self, __arg_0: &amp;mut __H)</code></span></h4>
+<div class='docblock'><p>Feeds this value into the state given, updating the hasher as necessary.</p>
+</div><h4 id='method.hash_slice' class="method"><span id='hash_slice.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#method.hash_slice' class='fnname'>hash_slice</a>&lt;H&gt;(data: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[Self]</a>, state: &amp;mut H) <span class="where fmt-newline">where H: <a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html" title="trait core::hash::Hasher">Hasher</a></span></code><div class='since' title='Stable since Rust version 1.3.0'>1.3.0</div></span></h4>
+<div class='docblock'><p>Feeds a slice of this type into the state provided.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html" title="trait core::cmp::Eq">Eq</a> for <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/twitch_client/param.rs.html#93' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a> for <a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/twitch_client/param.rs.html#93' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.eq' class="method"><span id='eq.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq">Read more</a></p>
+</div><h4 id='method.ne' class="method"><span id='ne.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, __arg_0: &amp;<a class="struct" href="../../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>!=</code>.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "twitch_client";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

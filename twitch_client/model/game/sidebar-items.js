@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Game","Information about the game itself."],["GameInfo","Current twitch stats about the game."],["TopGames","Games sorted by number of current viewers on Twitch, most popular first."]]});

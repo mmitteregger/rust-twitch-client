@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `TwitchClient` struct in crate `twitch_client`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, TwitchClient">
+
+    <title>twitch_client::TwitchClient - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>twitch_client</a></p><script>window.sidebarCurrent = {name: 'TwitchClient', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>twitch_client</a>::<wbr><a class="struct" href=''>TwitchClient</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/twitch_client/lib.rs.html#83-85' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct TwitchClient { /* fields omitted */ }</pre><div class='docblock'><p>Readonly client for the <a href="https://dev.twitch.tv/docs">Twitch REST API</a>.</p>
+
+<p>Currently <a href="https://dev.twitch.tv/docs/v3">Twitch API version 3</a> is used.</p>
+
+<p>By using the Twitch Client you agree to follow the
+<a href="https://www.twitch.tv/p/developer-agreement">Twitch Developer Services Agreement</a> and the <a href="https://help.twitch.tv/customer/portal/articles/735191-terms-of-service">Twitch Terms of Service</a>.
+This library is in no way affiliated with, authorized, maintained, sponsored
+or endorsed by Twitch or any of its affiliates or subsidiaries</p>
+
+<h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">twitch_client</span>::<span class="kw-2">*</span>;
+
+<span class="kw">let</span> <span class="ident">twitch_client</span> <span class="op">=</span> <span class="ident">TwitchClient</span>::<span class="ident">new</span>(<span class="string">&quot;&lt;YOUR_TWITCH_CLIENT_ID&gt;&quot;</span>).<span class="ident">unwrap</span>();
+
+<span class="kw">match</span> <span class="ident">twitch_client</span>.<span class="ident">top_games</span>(<span class="ident">TopGamesParams</span>::<span class="ident">default</span>()) {
+    <span class="prelude-val">Ok</span>(<span class="ident">top_games</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Total games: {}&quot;</span>, <span class="ident">top_games</span>.<span class="ident">total</span>()),
+    <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Failed to retrieve top games: {}&quot;</span>, <span class="ident">err</span>),
+}</pre>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class="struct" href="../twitch_client/struct.TwitchClient.html" title="struct twitch_client::TwitchClient">TwitchClient</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/twitch_client/lib.rs.html#87-123' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class="method"><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>&lt;S:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/collections/string/struct.String.html" title="struct collections::string::String">String</a>&gt;&gt;(client_id: S) -&gt; <a class="type" href="../twitch_client/error/type.Result.html" title="type twitch_client::error::Result">Result</a>&lt;<a class="struct" href="../twitch_client/struct.TwitchClient.html" title="struct twitch_client::TwitchClient">TwitchClient</a>&gt;</code></span></h4>
+<div class='docblock'><p>Constructs a new client instance with a new hyper https client using native tls.</p>
+
+<p>Since <a href="https://blog.twitch.tv/client-id-required-for-kraken-api-calls-afbb8e95f843">2016-08-06</a> a Twitch Client ID is required.
+Instructions for obtaining it can be found at the <a href="https://dev.twitch.tv/docs/v5/guides/using-the-twitch-api/#getting-a-client-id">Twitch API Documentation</a>.</p>
+</div><h4 id='method.with_hyper_client' class="method"><span id='with_hyper_client.v' class='invisible'><code>fn <a href='#method.with_hyper_client' class='fnname'>with_hyper_client</a>&lt;S:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/collections/string/struct.String.html" title="struct collections::string::String">String</a>&gt;&gt;(client_id: S,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hyper_client: <a class="struct" href="https://hyper.rs/hyper/v0.10.9/hyper/hyper/client/struct.Client.html" title="struct hyper::client::Client">Client</a>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class="struct" href="../twitch_client/struct.TwitchClient.html" title="struct twitch_client::TwitchClient">TwitchClient</a></code></span></h4>
+<div class='docblock'><p>Constructs a new client instance using the provided hyper client.</p>
+
+<p>Note that the provided hyper client needs to use a tls connection.</p>
+
+<p>Since <a href="https://blog.twitch.tv/client-id-required-for-kraken-api-calls-afbb8e95f843">2016-08-06</a> a Twitch Client ID is required.
+Instructions for obtaining it can be found at the <a href="https://dev.twitch.tv/docs/v5/guides/using-the-twitch-api/#getting-a-client-id">Twitch API Documentation</a>.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="struct" href="../twitch_client/struct.TwitchClient.html" title="struct twitch_client::TwitchClient">TwitchClient</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/twitch_client/lib.rs.html#126-203' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.top_games' class="method"><span id='top_games.v' class='invisible'><code>fn <a href='#method.top_games' class='fnname'>top_games</a>(&amp;self, params: <a class="struct" href="../twitch_client/param/struct.TopGamesParams.html" title="struct twitch_client::param::TopGamesParams">TopGamesParams</a>) -&gt; <a class="type" href="../twitch_client/error/type.Result.html" title="type twitch_client::error::Result">Result</a>&lt;<a class="struct" href="../twitch_client/model/game/struct.TopGames.html" title="struct twitch_client::model::game::TopGames">TopGames</a>&gt;</code></span></h4>
+<div class='docblock'><p>Get games by number of viewers.</p>
+
+<p>Returns a list of games objects sorted by number of current viewers on Twitch, most popular first.</p>
+</div><h4 id='method.ingests' class="method"><span id='ingests.v' class='invisible'><code>fn <a href='#method.ingests' class='fnname'>ingests</a>(&amp;self) -&gt; <a class="type" href="../twitch_client/error/type.Result.html" title="type twitch_client::error::Result">Result</a>&lt;<a class="struct" href="../twitch_client/model/ingest/struct.Ingests.html" title="struct twitch_client::model::ingest::Ingests">Ingests</a>&gt;</code></span></h4>
+<div class='docblock'><p>Get list of ingests.</p>
+
+<p>Returns a list of ingest objects.</p>
+</div><h4 id='method.basic_info' class="method"><span id='basic_info.v' class='invisible'><code>fn <a href='#method.basic_info' class='fnname'>basic_info</a>(&amp;self) -&gt; <a class="type" href="../twitch_client/error/type.Result.html" title="type twitch_client::error::Result">Result</a>&lt;<a class="struct" href="../twitch_client/model/root/struct.BasicInfo.html" title="struct twitch_client::model::root::BasicInfo">BasicInfo</a>&gt;</code></span></h4>
+<div class='docblock'><p>Get top level links object and authorization status.</p>
+
+<p>Basic information about the API and authentication status.
+If you are authenticated, the response includes the status of your token and links to other related resources.</p>
+</div><h4 id='method.stream' class="method"><span id='stream.v' class='invisible'><code>fn <a href='#method.stream' class='fnname'>stream</a>(&amp;self, channel: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="type" href="../twitch_client/error/type.Result.html" title="type twitch_client::error::Result">Result</a>&lt;<a class="struct" href="../twitch_client/model/stream/struct.ChannelStream.html" title="struct twitch_client::model::stream::ChannelStream">ChannelStream</a>&gt;</code></span></h4>
+<div class='docblock'><p>Get stream object.</p>
+
+<p>Returns a stream object if live.</p>
+</div><h4 id='method.streams' class="method"><span id='streams.v' class='invisible'><code>fn <a href='#method.streams' class='fnname'>streams</a>(&amp;self, params: <a class="struct" href="../twitch_client/param/struct.StreamsParams.html" title="struct twitch_client::param::StreamsParams">StreamsParams</a>) -&gt; <a class="type" href="../twitch_client/error/type.Result.html" title="type twitch_client::error::Result">Result</a>&lt;<a class="struct" href="../twitch_client/model/stream/struct.Streams.html" title="struct twitch_client::model::stream::Streams">Streams</a>&gt;</code></span></h4>
+<div class='docblock'><p>Get stream object.</p>
+
+<p>Returns a list of stream objects that are queried by a number of parameters
+sorted by number of viewers descending.</p>
+</div><h4 id='method.featured_streams' class="method"><span id='featured_streams.v' class='invisible'><code>fn <a href='#method.featured_streams' class='fnname'>featured_streams</a>(&amp;self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; params: <a class="struct" href="../twitch_client/param/struct.FeaturedStreamsParams.html" title="struct twitch_client::param::FeaturedStreamsParams">FeaturedStreamsParams</a>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class="type" href="../twitch_client/error/type.Result.html" title="type twitch_client::error::Result">Result</a>&lt;<a class="struct" href="../twitch_client/model/stream/struct.FeaturedStreams.html" title="struct twitch_client::model::stream::FeaturedStreams">FeaturedStreams</a>&gt;</code></span></h4>
+<div class='docblock'><p>Get a list of featured streams.</p>
+
+<p>Returns a list of featured (promoted) stream objects.</p>
+</div><h4 id='method.streams_summary' class="method"><span id='streams_summary.v' class='invisible'><code>fn <a href='#method.streams_summary' class='fnname'>streams_summary</a>(&amp;self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; params: <a class="struct" href="../twitch_client/param/struct.StreamsSummaryParams.html" title="struct twitch_client::param::StreamsSummaryParams">StreamsSummaryParams</a>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class="type" href="../twitch_client/error/type.Result.html" title="type twitch_client::error::Result">Result</a>&lt;<a class="struct" href="../twitch_client/model/stream/struct.StreamsSummary.html" title="struct twitch_client::model::stream::StreamsSummary">StreamsSummary</a>&gt;</code></span></h4>
+<div class='docblock'><p>Get a summary of streams.</p>
+
+<p>Returns a summary of current streams.</p>
+</div><h4 id='method.channel' class="method"><span id='channel.v' class='invisible'><code>fn <a href='#method.channel' class='fnname'>channel</a>(&amp;self, channel: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="type" href="../twitch_client/error/type.Result.html" title="type twitch_client::error::Result">Result</a>&lt;<a class="struct" href="../twitch_client/model/channel/struct.Channel.html" title="struct twitch_client::model::channel::Channel">Channel</a>&gt;</code></span></h4>
+<div class='docblock'><p>Get channel object.</p>
+
+<p>Returns a channel object.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "twitch_client";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

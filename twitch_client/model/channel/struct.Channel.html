@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Channel` struct in crate `twitch_client`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Channel">
+
+    <title>twitch_client::model::channel::Channel - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>twitch_client</a>::<wbr><a href='../index.html'>model</a>::<wbr><a href='index.html'>channel</a></p><script>window.sidebarCurrent = {name: 'Channel', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>twitch_client</a>::<wbr><a href='../index.html'>model</a>::<wbr><a href='index.html'>channel</a>::<wbr><a class="struct" href=''>Channel</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../../src/twitch_client/model/channel.rs.html#54-77' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Channel { /* fields omitted */ }</pre><div class='docblock'><p>Channel information.</p>
+
+<h1 id='example-in-json' class='section-header'><a href='#example-in-json'>Example in JSON</a></h1>
+<pre><code class="language-json">{
+  &quot;mature&quot;: false,
+  &quot;status&quot;: &quot;test status&quot;,
+  &quot;broadcaster_language&quot;: &quot;en&quot;,
+  &quot;display_name&quot;: &quot;test_channel&quot;,
+  &quot;game&quot;: &quot;Gaming Talk Shows&quot;,
+  &quot;delay&quot;: null,
+  &quot;language&quot;: &quot;en&quot;,
+  &quot;_id&quot;: 12345,
+  &quot;name&quot;: &quot;test_channel&quot;,
+  &quot;created_at&quot;: &quot;2007-05-22T10:39:54Z&quot;,
+  &quot;updated_at&quot;: &quot;2015-02-12T04:15:49Z&quot;,
+  &quot;logo&quot;: &quot;http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-profile_image-94a42b3a13c31c02-300x300.jpeg&quot;,
+  &quot;banner&quot;: &quot;http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-channel_header_image-08dd874c17f39837-640x125.png&quot;,
+  &quot;video_banner&quot;: &quot;http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-channel_offline_image-b314c834d210dc1a-640x360.png&quot;,
+  &quot;background&quot;: null,
+  &quot;profile_banner&quot;: &quot;http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-profile_banner-6936c61353e4aeed-480.png&quot;,
+  &quot;profile_banner_background_color&quot;: &quot;null&quot;,
+  &quot;partner&quot;: true,
+  &quot;url&quot;: &quot;http://www.twitch.tv/test_channel&quot;,
+  &quot;views&quot;: 49144894,
+  &quot;followers&quot;: 215780,
+  &quot;_links&quot;: {
+    &quot;self&quot;: &quot;https://api.twitch.tv/kraken/channels/test_channel&quot;,
+    &quot;follows&quot;: &quot;https://api.twitch.tv/kraken/channels/test_channel/follows&quot;,
+    &quot;commercial&quot;: &quot;https://api.twitch.tv/kraken/channels/test_channel/commercial&quot;,
+    &quot;stream_key&quot;: &quot;https://api.twitch.tv/kraken/channels/test_channel/stream_key&quot;,
+    &quot;chat&quot;: &quot;https://api.twitch.tv/kraken/chat/test_channel&quot;,
+    &quot;features&quot;: &quot;https://api.twitch.tv/kraken/channels/test_channel/features&quot;,
+    &quot;subscriptions&quot;: &quot;https://api.twitch.tv/kraken/channels/test_channel/subscriptions&quot;,
+    &quot;editors&quot;: &quot;https://api.twitch.tv/kraken/channels/test_channel/editors&quot;,
+    &quot;teams&quot;: &quot;https://api.twitch.tv/kraken/channels/test_channel/teams&quot;,
+    &quot;videos&quot;: &quot;https://api.twitch.tv/kraken/channels/test_channel/videos&quot;
+  }
+}
+</code></pre>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class="struct" href="../../../twitch_client/model/channel/struct.Channel.html" title="struct twitch_client::model::channel::Channel">Channel</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/twitch_client/model/channel.rs.html#80-165' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.id' class="method"><span id='id.v' class='invisible'><code>fn <a href='#method.id' class='fnname'>id</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a></code></span></h4>
+<div class='docblock'><p>Example value: 12345</p>
+</div><h4 id='method.name' class="method"><span id='name.v' class='invisible'><code>fn <a href='#method.name' class='fnname'>name</a>(&amp;self) -&gt; &amp;<a class="struct" href="https://doc.rust-lang.org/nightly/collections/string/struct.String.html" title="struct collections::string::String">String</a></code></span></h4>
+<div class='docblock'><p>Example value: &quot;test_channel&quot;</p>
+</div><h4 id='method.display_name' class="method"><span id='display_name.v' class='invisible'><code>fn <a href='#method.display_name' class='fnname'>display_name</a>(&amp;self) -&gt; &amp;<a class="struct" href="https://doc.rust-lang.org/nightly/collections/string/struct.String.html" title="struct collections::string::String">String</a></code></span></h4>
+<div class='docblock'><p>Example value: &quot;test_channel&quot;</p>
+</div><h4 id='method.game' class="method"><span id='game.v' class='invisible'><code>fn <a href='#method.game' class='fnname'>game</a>(&amp;self) -&gt; &amp;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/collections/string/struct.String.html" title="struct collections::string::String">String</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: &quot;Gaming Talk Shows&quot;</p>
+</div><h4 id='method.status' class="method"><span id='status.v' class='invisible'><code>fn <a href='#method.status' class='fnname'>status</a>(&amp;self) -&gt; &amp;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/collections/string/struct.String.html" title="struct collections::string::String">String</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: &quot;test status&quot;</p>
+</div><h4 id='method.mature' class="method"><span id='mature.v' class='invisible'><code>fn <a href='#method.mature' class='fnname'>mature</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: false</p>
+</div><h4 id='method.delay' class="method"><span id='delay.v' class='invisible'><code>fn <a href='#method.delay' class='fnname'>delay</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: 0</p>
+</div><h4 id='method.language' class="method"><span id='language.v' class='invisible'><code>fn <a href='#method.language' class='fnname'>language</a>(&amp;self) -&gt; &amp;<a class="type" href="../../../twitch_client/model/type.LocaleString.html" title="type twitch_client::model::LocaleString">LocaleString</a></code></span></h4>
+<div class='docblock'><p>Example value: &quot;en&quot;</p>
+</div><h4 id='method.broadcaster_language' class="method"><span id='broadcaster_language.v' class='invisible'><code>fn <a href='#method.broadcaster_language' class='fnname'>broadcaster_language</a>(&amp;self) -&gt; &amp;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="type" href="../../../twitch_client/model/type.LocaleString.html" title="type twitch_client::model::LocaleString">LocaleString</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: &quot;en&quot;</p>
+</div><h4 id='method.created_at' class="method"><span id='created_at.v' class='invisible'><code>fn <a href='#method.created_at' class='fnname'>created_at</a>(&amp;self) -&gt; &amp;<a class="type" href="../../../twitch_client/model/type.DateString.html" title="type twitch_client::model::DateString">DateString</a></code></span></h4>
+<div class='docblock'><p>Example value: &quot;2007-05-22T10:39:54Z&quot;</p>
+</div><h4 id='method.updated_at' class="method"><span id='updated_at.v' class='invisible'><code>fn <a href='#method.updated_at' class='fnname'>updated_at</a>(&amp;self) -&gt; &amp;<a class="type" href="../../../twitch_client/model/type.DateString.html" title="type twitch_client::model::DateString">DateString</a></code></span></h4>
+<div class='docblock'><p>Example value: &quot;2015-02-12T04:15:49Z&quot;</p>
+</div><h4 id='method.logo' class="method"><span id='logo.v' class='invisible'><code>fn <a href='#method.logo' class='fnname'>logo</a>(&amp;self) -&gt; &amp;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="type" href="../../../twitch_client/model/type.UrlString.html" title="type twitch_client::model::UrlString">UrlString</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: &quot;<a href="http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-profile_image-94a42b3a13c31c02-300x300.jpeg">http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-profile_image-94a42b3a13c31c02-300x300.jpeg</a>&quot;</p>
+</div><h4 id='method.banner' class="method"><span id='banner.v' class='invisible'><code>fn <a href='#method.banner' class='fnname'>banner</a>(&amp;self) -&gt; &amp;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="type" href="../../../twitch_client/model/type.UrlString.html" title="type twitch_client::model::UrlString">UrlString</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: &quot;<a href="http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-channel_header_image-08dd874c17f39837-640x125.png">http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-channel_header_image-08dd874c17f39837-640x125.png</a>&quot;</p>
+</div><h4 id='method.video_banner' class="method"><span id='video_banner.v' class='invisible'><code>fn <a href='#method.video_banner' class='fnname'>video_banner</a>(&amp;self) -&gt; &amp;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="type" href="../../../twitch_client/model/type.UrlString.html" title="type twitch_client::model::UrlString">UrlString</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: &quot;<a href="http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-channel_offline_image-b314c834d210dc1a-640x360.png">http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-channel_offline_image-b314c834d210dc1a-640x360.png</a>&quot;</p>
+</div><h4 id='method.background' class="method"><span id='background.v' class='invisible'><code>fn <a href='#method.background' class='fnname'>background</a>(&amp;self) -&gt; &amp;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="type" href="../../../twitch_client/model/type.UrlString.html" title="type twitch_client::model::UrlString">UrlString</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: <code>None</code></p>
+</div><h4 id='method.profile_banner' class="method"><span id='profile_banner.v' class='invisible'><code>fn <a href='#method.profile_banner' class='fnname'>profile_banner</a>(&amp;self) -&gt; &amp;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="type" href="../../../twitch_client/model/type.UrlString.html" title="type twitch_client::model::UrlString">UrlString</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: &quot;<a href="http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-profile_banner-6936c61353e4aeed-480.png">http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-profile_banner-6936c61353e4aeed-480.png</a>&quot;</p>
+</div><h4 id='method.profile_banner_background_color' class="method"><span id='profile_banner_background_color.v' class='invisible'><code>fn <a href='#method.profile_banner_background_color' class='fnname'>profile_banner_background_color</a>(&amp;self) -&gt; &amp;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="type" href="../../../twitch_client/model/type.UrlString.html" title="type twitch_client::model::UrlString">UrlString</a>&gt;</code></span></h4>
+<div class='docblock'><p>Example value: &quot;null&quot;</p>
+</div><h4 id='method.partner' class="method"><span id='partner.v' class='invisible'><code>fn <a href='#method.partner' class='fnname'>partner</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>Example value: true</p>
+</div><h4 id='method.url' class="method"><span id='url.v' class='invisible'><code>fn <a href='#method.url' class='fnname'>url</a>(&amp;self) -&gt; &amp;<a class="type" href="../../../twitch_client/model/type.UrlString.html" title="type twitch_client::model::UrlString">UrlString</a></code></span></h4>
+<div class='docblock'><p>Example value: &quot;<a href="http://www.twitch.tv/test_channel">http://www.twitch.tv/test_channel</a>&quot;</p>
+</div><h4 id='method.views' class="method"><span id='views.v' class='invisible'><code>fn <a href='#method.views' class='fnname'>views</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span></h4>
+<div class='docblock'><p>Example value: 49144894</p>
+</div><h4 id='method.followers' class="method"><span id='followers.v' class='invisible'><code>fn <a href='#method.followers' class='fnname'>followers</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span></h4>
+<div class='docblock'><p>Example value: 215780</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../../../twitch_client/model/channel/struct.Channel.html" title="struct twitch_client::model::channel::Channel">Channel</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/twitch_client/model/channel.rs.html#53' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../../../twitch_client/model/channel/struct.Channel.html" title="struct twitch_client::model::channel::Channel">Channel</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/twitch_client/model/channel.rs.html#53' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../../../twitch_client/model/channel/struct.Channel.html" title="struct twitch_client::model::channel::Channel">Channel</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "twitch_client";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

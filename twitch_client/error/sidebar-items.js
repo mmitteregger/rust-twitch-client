@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","Twitch Client error."]],"type":[["Result","Result type from methods that can have Twitch Client Errors."]]});

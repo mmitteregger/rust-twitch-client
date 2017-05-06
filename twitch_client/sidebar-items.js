@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["error","Error and Result module."],["model","Twitch return types."],["param","Parameters for `TwitchClient` methods."]],"struct":[["TwitchClient","Readonly client for the [Twitch REST API]."]]});
